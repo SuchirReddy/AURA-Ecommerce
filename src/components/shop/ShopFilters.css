@@ -1,0 +1,237 @@
+.shop-filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters-clear-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: var(--spacing-md);
+  transition: all var(--transition-fast);
+  align-self: flex-start;
+}
+
+.filters-clear-all:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.filter-empty {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.price-error {
+  font-size: 0.8rem;
+  color: #ff3b30;
+  margin-top: 6px;
+}
+
+.filter-section {
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-md) 0;
+}
+
+.filter-section:last-child {
+  border-bottom: none;
+}
+
+.filter-section-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  color: var(--text-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.filter-section-header:hover {
+  opacity: 0.8;
+}
+
+.filter-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.filter-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transition-normal);
+}
+
+.filter-content.expanded {
+  grid-template-rows: 1fr;
+}
+
+.filter-content-inner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  min-height: 0;
+}
+
+.filter-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.filter-checkbox-label:hover {
+  color: var(--text-primary);
+}
+
+.filter-checkbox-label input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.filter-checkbox-label input[type="checkbox"]:checked {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.filter-checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--bg-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.filter-count {
+  margin-left: auto;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.filter-stars {
+  color: var(--text-primary);
+  letter-spacing: 2px;
+}
+
+/* Price Inputs */
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.price-input-group {
+  position: relative;
+  flex: 1;
+}
+
+.currency {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.price-input {
+  width: 100%;
+  padding: 8px 10px 8px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.price-input:focus {
+  border-color: var(--text-primary);
+}
+
+.price-separator {
+  color: var(--text-secondary);
+}
+
+/* Toggle Switch */
+.filter-toggle-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 24px;
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--text-secondary);
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.toggle-input:checked + .toggle-slider {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.toggle-input:checked + .toggle-slider:before {
+  transform: translateX(16px);
+  background-color: var(--bg-primary);
+}

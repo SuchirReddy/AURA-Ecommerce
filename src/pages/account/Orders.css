@@ -1,0 +1,261 @@
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.order-detailed-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+.order-card-header {
+  background-color: var(--bg-secondary);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.order-header-left {
+  display: flex;
+  gap: var(--spacing-3xl);
+}
+
+.header-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.block-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.block-value {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.invoice-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+}
+
+/* Tracker */
+.order-status-tracker {
+  padding: var(--spacing-xl);
+  border-bottom: 1px solid var(--border);
+}
+
+.tracker-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.tracker-header h3 {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.tracker-header span {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.status-timeline.horizontal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 600px;
+  width: 100%;
+  padding-top: 15px; /* Center of the 32px icon */
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: -15px; /* Pull icon center to the padding line */
+  z-index: 2;
+  position: relative;
+  width: 80px; /* Fixed width prevents text from pushing items */
+}
+
+.timeline-step.active {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.step-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--bg-primary); /* Solid background to cover lines if they overlap */
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  z-index: 2;
+}
+
+.timeline-step.completed .step-icon {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  border-color: var(--text-primary);
+}
+
+.timeline-line.completed {
+  background-color: var(--text-primary);
+}
+
+.timeline-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--border);
+  margin: 0 -15px; /* Pull line slightly behind the icons */
+  z-index: 1;
+  transition: background-color var(--transition-fast);
+}
+
+/* Items */
+.order-items-list {
+  padding: var(--spacing-xl);
+}
+
+.order-item {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.order-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.order-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: 500;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.item-variant {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.item-qty {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.item-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.text-btn:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .order-header-left {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .order-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+  }
+  
+  .order-header-right {
+    width: 100%;
+  }
+  
+  .invoice-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .status-timeline.horizontal {
+    flex-direction: row;
+    align-items: flex-start;
+    padding-top: 14px;
+    gap: 0;
+  }
+  
+  .timeline-step {
+    flex-direction: column;
+    width: 65px;
+    font-size: 0.75rem;
+    margin-top: -14px;
+    gap: 6px;
+  }
+  
+  .step-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .step-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .timeline-line {
+    width: auto;
+    height: 2px;
+    margin: 0 -10px;
+  }
+  
+  .order-item {
+    flex-direction: column;
+  }
+  
+  .item-actions {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--spacing-sm);
+  }
+}

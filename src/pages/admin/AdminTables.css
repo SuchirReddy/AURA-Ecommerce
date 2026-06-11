@@ -1,0 +1,196 @@
+/* Shared Table Styles for Admin Dashboard */
+
+.admin-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.admin-list-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.admin-filters-bar {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.admin-filter-select,
+.admin-search-input-wrapper input {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.admin-search-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.admin-search-input-wrapper input {
+  width: 100%;
+  padding-left: 38px;
+}
+
+.admin-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+/* Data Table */
+.admin-data-table-container {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.admin-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.admin-data-table th {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: rgba(0,0,0,0.2); /* Very subtle header background */
+}
+
+.admin-data-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.admin-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-data-table tr:hover td {
+  background-color: rgba(255,255,255,0.02);
+}
+
+/* Table Specific Elements */
+.table-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.table-product-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.table-product-image {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+}
+
+.table-product-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.table-product-name:hover {
+  text-decoration: underline;
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.table-action-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.table-action-btn:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.table-action-btn.delete:hover {
+  color: #ff3b30;
+}
+
+/* Pagination Placeholder */
+.admin-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 8px;
+}
+
+/* Badges for Admin Tables */
+.admin-badge, .status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+/* Status variants */
+.admin-badge.completed, .status-badge.status-paid, .status-badge.status-success { 
+  background-color: rgba(52, 199, 89, 0.1); 
+  color: #34c759; 
+}
+
+.admin-badge.processing, .status-badge.status-processing { 
+  background-color: rgba(0, 122, 255, 0.1); 
+  color: #007aff; 
+}
+
+.admin-badge.pending, .status-badge.status-pending { 
+  background-color: rgba(255, 149, 0, 0.1); 
+  color: #ff9500; 
+}
+
+.admin-badge.cancelled, .status-badge.status-failed, .status-badge.status-cancelled {
+  background-color: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}

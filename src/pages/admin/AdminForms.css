@@ -1,0 +1,184 @@
+/* Shared Form Styles for Admin Dashboard */
+
+.admin-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.admin-form-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.back-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.back-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.admin-form-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-form-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* Layout */
+.admin-form-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-2xl);
+}
+
+.admin-form-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.admin-form-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* Form Sections */
+.admin-form-section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+}
+
+.admin-form-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+/* React DatePicker overrides */
+.date-picker-wrapper {
+  display: block;
+  width: 100%;
+}
+.react-datepicker-wrapper {
+  display: block;
+  width: 100%;
+}
+.react-datepicker__input-container {
+  display: block;
+  width: 100%;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-size: 0.95rem;
+  transition: border-color var(--transition-fast);
+  font-family: inherit;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--text-secondary);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* Media Upload Zone */
+.media-upload-zone {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-3xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--bg-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.media-upload-zone:hover {
+  border-color: var(--text-secondary);
+  background-color: rgba(255,255,255,0.02);
+}
+
+.upload-icon {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.media-upload-zone h3 {
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.media-upload-zone p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .admin-form-layout {
+    grid-template-columns: 1fr;
+  }
+}

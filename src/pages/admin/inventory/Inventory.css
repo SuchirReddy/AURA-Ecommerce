@@ -1,0 +1,55 @@
+.inventory-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.inventory-kpi-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.inventory-kpi-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.inventory-adjustment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.inventory-action-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.inventory-action-btn:hover {
+  background: var(--bg-secondary);
+}
+
+@media (max-width: 992px) {
+  .inventory-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .inventory-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

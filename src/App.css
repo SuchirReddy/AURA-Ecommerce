@@ -1,0 +1,10 @@
+/* Custom styles for App components are modularized in their respective css files */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}

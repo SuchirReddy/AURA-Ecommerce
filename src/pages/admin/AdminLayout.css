@@ -1,0 +1,117 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-primary); /* Uses storefront tokens */
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Fix all selects + option dropdowns in admin */
+.admin-layout select,
+.admin-layout select option {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  border-color: var(--border);
+}
+
+.admin-layout select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.admin-filter-select,
+.admin-select,
+.checkout-input[type="text"],
+.checkout-input {
+  color-scheme: dark;
+}
+
+/* Sidebar Wrapper */
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  transition: width var(--transition-normal);
+  z-index: 50;
+}
+
+.admin-layout.sidebar-collapsed .admin-sidebar {
+  width: 72px;
+}
+
+/* Main Content Wrapper */
+.admin-main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: var(--spacing-2xl);
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.admin-navbar {
+  height: 64px;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-xl);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Utilities for Admin */
+.admin-placeholder {
+  padding: var(--spacing-3xl);
+  text-align: center;
+  color: var(--text-secondary);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  margin-top: var(--spacing-2xl);
+}
+
+/* Mobile Sidebar */
+.admin-sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .admin-layout.sidebar-expanded .admin-sidebar,
+  .admin-layout.sidebar-collapsed .admin-sidebar {
+    position: fixed;
+    left: -300px;
+    width: 280px;
+    transition: left var(--transition-normal);
+  }
+  
+  .admin-layout .admin-sidebar.mobile-open {
+    left: 0;
+  }
+  
+  .admin-sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 45;
+  }
+  
+  .admin-main-content {
+    padding: var(--spacing-xl);
+  }
+}

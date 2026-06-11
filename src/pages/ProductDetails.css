@@ -1,0 +1,128 @@
+.pdp-page {
+  padding-top: 100px;
+  padding-bottom: var(--spacing-3xl);
+}
+
+.pdp-breadcrumbs {
+  margin-bottom: var(--spacing-xl);
+}
+
+.pdp-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3xl);
+  margin-bottom: var(--spacing-3xl);
+}
+
+.pdp-info-column {
+  /* No sticky here because tabs make it long, but if we wanted info to stick we could */
+}
+
+.pdp-cross-sell {
+  border-top: 1px solid var(--border);
+  padding-top: var(--spacing-2xl);
+  margin-top: var(--spacing-2xl);
+}
+
+/* Mobile Sticky Bar */
+.pdp-mobile-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border);
+  padding: var(--spacing-md) var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+}
+
+.pdp-mobile-sticky-bar.visible {
+  transform: translateY(0);
+}
+
+.sticky-bar-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sticky-price {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.sticky-add-btn {
+  padding: 10px 24px;
+}
+
+@media (min-width: 993px) {
+  .pdp-mobile-sticky-bar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .pdp-main {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .pdp-page {
+    padding-top: 90px;
+  }
+
+  .pdp-cross-sell {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .pdp-page {
+    padding-top: 75px;
+    padding-bottom: 80px; /* Space for sticky bar */
+  }
+
+  .pdp-main {
+    gap: var(--spacing-lg);
+  }
+
+  .pdp-breadcrumbs {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .pdp-mobile-sticky-bar {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .pdp-cross-sell {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .pdp-page {
+    padding-top: 70px;
+  }
+
+  .pdp-main {
+    gap: var(--spacing-md);
+  }
+
+  .sticky-price {
+    font-size: 1rem;
+  }
+
+  .sticky-add-btn {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+  }
+}
+
