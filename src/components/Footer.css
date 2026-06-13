@@ -11,11 +11,22 @@
 }
 
 .footer-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.05em;
   margin-bottom: var(--spacing-md);
   display: block;
+  width: fit-content;
+}
+
+.footer-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer-logo-img {
+    filter: invert(0);
+  }
 }
 
 .footer-description {

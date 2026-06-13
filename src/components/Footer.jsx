@@ -6,7 +6,9 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer-container">
         <div className="footer-brand">
-          <a href="/" className="footer-logo">AURA.</a>
+          <a href="/" className="footer-logo">
+            <img src="/logo-white.png" alt="AURA Logo" className="footer-logo-img" />
+          </a>
           <p className="footer-description">
             Redefining modern minimalism. Premium quality apparel and accessories for the everyday.
           </p>

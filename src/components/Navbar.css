@@ -29,10 +29,21 @@
 }
 
 .navbar-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo-img {
+  height: 20px;
+  width: auto;
+  display: block;
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .navbar-logo-img {
+    filter: invert(0);
+  }
 }
 
 .navbar-links {

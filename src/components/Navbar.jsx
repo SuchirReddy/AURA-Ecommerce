@@ -91,9 +91,8 @@ const Navbar = () => {
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Logo */}
         <Link to="/" className="navbar-logo">
-          AURA.
+          <img src="/logo-white.png" alt="AURA Logo" className="navbar-logo-img" />
         </Link>
 
         {/* Desktop Navigation */}
