@@ -17,19 +17,21 @@ const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
 
   const fetchCartCount = async () => {
-    if (user) {
-      try {
+    try {
+      if (user) {
         const profile = await syncUserProfile(user);
         if (profile) {
           const items = await getCartItems(profile.id);
           const count = items.reduce((acc, item) => acc + item.quantity, 0);
           setCartCount(count);
         }
-      } catch (error) {
-        console.error("Error fetching cart count:", error);
+      } else {
+        const items = await getCartItems(null);
+        const count = items.reduce((acc, item) => acc + item.quantity, 0);
+        setCartCount(count);
       }
-    } else {
-      setCartCount(0);
+    } catch (error) {
+      console.error("Error fetching cart count:", error);
     }
   };
 

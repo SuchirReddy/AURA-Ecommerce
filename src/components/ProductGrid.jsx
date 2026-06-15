@@ -2,11 +2,51 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 import { getProducts } from '../services/productService';
+import { useUser } from '@clerk/clerk-react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { addToCart } from '../services/cartService';
+import { syncUserProfile } from '../services/userService';
 import './ProductGrid.css';
 
 const ProductGrid = ({ title, maxItems = 4 }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    try {
+      let uid = null;
+      if (user) {
+        const profile = await syncUserProfile(user);
+        if (profile) uid = profile.id;
+      }
+      
+      const sizeStr = Array.isArray(product.sizes) && product.sizes.length > 0 ? product.sizes[0] : null;
+      let size = sizeStr;
+      if (typeof sizeStr === 'string' && sizeStr.startsWith('{')) {
+        try { size = JSON.parse(sizeStr); } catch(err){}
+      }
+      
+      const colorStr = Array.isArray(product.colors) && product.colors.length > 0 ? product.colors[0] : null;
+      let color = colorStr;
+      if (typeof colorStr === 'string' && colorStr.startsWith('{')) {
+        try { color = JSON.parse(colorStr); } catch(err){}
+      } else if (typeof colorStr === 'string') {
+        color = { name: colorStr, hex: '#000000' };
+      }
+
+      await addToCart(uid, product.id, 1, size, color);
+      toast.success('Added to cart!');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart');
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -52,7 +92,7 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
             <Link to={`/product/${product.id}`} key={product.id} className="product-card">
               <div className="product-image-container">
                 <img src={product.featured_image || 'https://via.placeholder.com/400x500?text=No+Image'} alt={product.name} className="product-image" />
-                <button className="add-to-cart-btn" onClick={(e) => { e.preventDefault(); /* TODO Cart */ }}>
+                <button className="add-to-cart-btn" onClick={(e) => handleAddToCart(e, product)}>
                   <ShoppingBag size={18} />
                   <span>Add to Cart</span>
                 </button>

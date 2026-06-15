@@ -160,7 +160,7 @@ const Checkout = () => {
       setStep(step + 1);
     } else {
       if (!userProfile) {
-        navigate('/sign-in');
+        navigate('/login');
         return;
       }
       
@@ -228,7 +228,7 @@ const Checkout = () => {
                 <div className="checkout-section">
                   <div className="section-header-flex">
                     <h2>Contact Information</h2>
-                    {!user && <span>Already have an account? <Link to="/sign-in">Log in</Link></span>}
+                    {!user && <span>Already have an account? <Link to="/login">Log in</Link></span>}
                   </div>
                   <input type="email" placeholder="Email" defaultValue={user?.primaryEmailAddress?.emailAddress || ''} className="checkout-input" required />
                   <label className="checkbox-label mt-sm">

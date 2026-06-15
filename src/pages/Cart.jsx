@@ -38,8 +38,8 @@ const Cart = () => {
           setCartItems(items);
         }
       } else {
-        // Guest users: we could support local storage cart here
-        setCartItems([]);
+        const items = await getCartItems(null);
+        setCartItems(items);
       }
     } catch (error) {
       console.error("Error fetching cart:", error);

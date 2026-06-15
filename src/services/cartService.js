@@ -12,7 +12,26 @@ export const getCartSessionId = () => {
 
 // Fetch cart items for a user (or session if not logged in)
 export const getCartItems = async (userId = null) => {
-  const sessionId = getCartSessionId();
+  if (!userId) {
+    const localCart = JSON.parse(localStorage.getItem('aura_guest_cart') || '[]');
+    if (localCart.length === 0) return [];
+    
+    const productIds = localCart.map(item => item.product_id);
+    const { data: products, error } = await supabase
+      .from('products')
+      .select('id, name, price, sale_price, featured_image')
+      .in('id', productIds);
+      
+    if (error) {
+      console.error("Error fetching guest cart products:", error);
+      return [];
+    }
+    
+    return localCart.map(item => ({
+      ...item,
+      products: products.find(p => p.id === item.product_id)
+    }));
+  }
   
   let query = supabase
     .from('cart_items')
@@ -33,15 +52,6 @@ export const getCartItems = async (userId = null) => {
 
   if (userId) {
     query = query.eq('user_id', userId);
-  } else {
-    // We don't have session_id in the DB schema provided in the plan! Wait, the schema I gave the user didn't have session_id.
-    // I need to use localStorage for guest carts if I can't modify the DB further.
-    // Let's assume we can fetch by user_id, or if guest, we just don't return anything for now.
-    // Actually, I can store guest cart in localStorage entirely if I want to be safe, but the plan said "cart_items" table.
-    // Since we created the table with user_id, I'll assume they must be logged in, or we just pass a fake UUID for guest.
-    // Let's just assume `user_id` is required.
-    // Wait, let's just return empty array if no userId.
-    return [];
   }
 
   const { data, error } = await query;
@@ -52,7 +62,26 @@ export const getCartItems = async (userId = null) => {
 
 export const addToCart = async (userId, productId, quantity = 1, size = null, color = null) => {
   if (!userId) {
-    throw new Error("Must be logged in to add to cart");
+    let localCart = JSON.parse(localStorage.getItem('aura_guest_cart') || '[]');
+    const existing = localCart.find(item => 
+      item.product_id === productId &&
+      JSON.stringify(item.size) === JSON.stringify(size) &&
+      JSON.stringify(item.color) === JSON.stringify(color)
+    );
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      localCart.push({
+        id: 'guest_' + Math.random().toString(36).substr(2, 9),
+        product_id: productId,
+        quantity,
+        size,
+        color
+      });
+    }
+    localStorage.setItem('aura_guest_cart', JSON.stringify(localCart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    return localCart;
   }
 
   // Check if item already exists
@@ -96,6 +125,17 @@ export const addToCart = async (userId, productId, quantity = 1, size = null, co
 };
 
 export const updateCartItemQuantity = async (id, quantity) => {
+  if (typeof id === 'string' && id.startsWith('guest_')) {
+    let localCart = JSON.parse(localStorage.getItem('aura_guest_cart') || '[]');
+    const item = localCart.find(i => i.id === id);
+    if (item) {
+      item.quantity = quantity;
+      localStorage.setItem('aura_guest_cart', JSON.stringify(localCart));
+      window.dispatchEvent(new Event('cartUpdated'));
+    }
+    return;
+  }
+
   const { data, error } = await supabase
     .from('cart_items')
     .update({ quantity })
@@ -107,6 +147,14 @@ export const updateCartItemQuantity = async (id, quantity) => {
 };
 
 export const removeCartItem = async (id) => {
+  if (typeof id === 'string' && id.startsWith('guest_')) {
+    let localCart = JSON.parse(localStorage.getItem('aura_guest_cart') || '[]');
+    localCart = localCart.filter(i => i.id !== id);
+    localStorage.setItem('aura_guest_cart', JSON.stringify(localCart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    return;
+  }
+
   const { error } = await supabase
     .from('cart_items')
     .delete()
@@ -116,7 +164,11 @@ export const removeCartItem = async (id) => {
 };
 
 export const clearCart = async (userId) => {
-  if (!userId) return;
+  if (!userId) {
+    localStorage.removeItem('aura_guest_cart');
+    window.dispatchEvent(new Event('cartUpdated'));
+    return;
+  }
   const { error } = await supabase
     .from('cart_items')
     .delete()

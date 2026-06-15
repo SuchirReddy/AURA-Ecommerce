@@ -101,7 +101,7 @@ const ProductDetails = () => {
 
   const handleWishlistToggle = async () => {
     if (!user || !userProfile) {
-      navigate('/sign-in');
+      navigate('/login');
       return;
     }
     try {
@@ -113,16 +113,9 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = async (productId, quantity, size, color) => {
-    if (!user) {
-      navigate('/sign-in');
-      return;
-    }
-    if (!userProfile) {
-      toast.error("Loading profile, please try again.");
-      return;
-    }
+    const uid = userProfile ? userProfile.id : null;
     try {
-      await addToCart(userProfile.id, productId, quantity, size, color);
+      await addToCart(uid, productId, quantity, size, color);
       toast.success("Added to cart!");
     } catch (error) {
       console.error("Error adding to cart:", error);

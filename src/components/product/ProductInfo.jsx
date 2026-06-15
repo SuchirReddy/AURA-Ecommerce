@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, Share2, Star } from 'lucide-react';
+import { Heart, Share2, Star, X, Ruler } from 'lucide-react';
 import './ProductInfo.css';
 
 const ProductInfo = ({ product, onAddToCart }) => {
@@ -8,6 +8,7 @@ const ProductInfo = ({ product, onAddToCart }) => {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   const increaseQuantity = () => setQuantity(prev => prev + 1);
   const decreaseQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
@@ -23,7 +24,7 @@ const ProductInfo = ({ product, onAddToCart }) => {
       {/* Header */}
       <span className="product-category-label">{product.category}</span>
       <h1 className="product-title-large">{product.name}</h1>
-      
+
       {/* Reviews Summary */}
       <div className="product-reviews-summary">
         <div className="stars">
@@ -75,7 +76,7 @@ const ProductInfo = ({ product, onAddToCart }) => {
           </div>
           <div className="color-swatches">
             {product.colors.map(color => (
-              <button 
+              <button
                 key={color.name}
                 className={`color-swatch ${selectedColor.name === color.name ? 'active' : ''}`}
                 style={{ backgroundColor: color.hex }}
@@ -91,7 +92,13 @@ const ProductInfo = ({ product, onAddToCart }) => {
           <div className="selector-header">
             <span className="selector-label">Size</span>
             <span className="selected-value">{selectedSize?.size || selectedSize}</span>
-            <a href="#" className="size-guide-link">Size Guide</a>
+            <button
+              className="size-guide-btn"
+              onClick={(e) => { e.preventDefault(); setIsSizeGuideOpen(true); }}
+            >
+              <Ruler size={14} />
+              <span>Size Guide</span>
+            </button>
           </div>
           <div className="size-pills">
             {product.sizes.map(sizeObj => {
@@ -101,7 +108,7 @@ const ProductInfo = ({ product, onAddToCart }) => {
               const isSelected = selectedSize === sizeObj || selectedSize?.size === sizeStr;
 
               return (
-                <button 
+                <button
                   key={sizeStr}
                   className={`size-pill ${isSelected ? 'active' : ''} ${isOutOfStock ? 'out-of-stock' : ''}`}
                   onClick={() => !isOutOfStock && setSelectedSize(sizeObj)}
@@ -136,9 +143,9 @@ const ProductInfo = ({ product, onAddToCart }) => {
 
       {/* Actions */}
       <div className="product-actions">
-        <button 
-          onClick={handleAddToCartClick} 
-          className="btn-primary add-to-cart-btn-large" 
+        <button
+          onClick={handleAddToCartClick}
+          className="btn-primary add-to-cart-btn-large"
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: 'none' }}
         >
           Add to Cart
@@ -149,6 +156,19 @@ const ProductInfo = ({ product, onAddToCart }) => {
       <div className="secondary-actions">
         <button className="sec-action-btn"><Share2 size={18} /> <span>Share</span></button>
       </div>
+
+      {/* Size Guide Modal */}
+      {isSizeGuideOpen && (
+        <div className="size-guide-modal-overlay" onClick={() => setIsSizeGuideOpen(false)}>
+          <div className="size-guide-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="size-guide-close" onClick={() => setIsSizeGuideOpen(false)}>
+              <X size={24} />
+            </button>
+            <h2 style={{ marginBottom: '16px', textAlign: 'center' }}>Size Guide</h2>
+            <img src="/size_guide.png" alt="Size Guide" className="size-guide-image" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { X, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './QuickViewModal.css';
 
-const QuickViewModal = ({ product, onClose }) => {
+const QuickViewModal = ({ product, onClose, onAddToCart }) => {
   // Prevent body scrolling when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -49,7 +49,7 @@ const QuickViewModal = ({ product, onClose }) => {
           </div>
           
           <div className="qv-actions">
-            <button className="qv-add-to-cart">
+            <button className="qv-add-to-cart" onClick={(e) => { if(onAddToCart) onAddToCart(e, product); }}>
               <ShoppingBag size={20} />
               Add to Cart
             </button>
