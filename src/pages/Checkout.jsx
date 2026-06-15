@@ -87,22 +87,22 @@ const Checkout = () => {
   };
 
   const subtotal = cartItems.reduce((acc, item) => acc + ((item.products?.sale_price || item.products?.price || 0) * item.quantity), 0);
-  const taxRate = settings?.tax_enabled === 'true' && settings?.tax_inclusive !== 'true' 
-    ? (Number(settings.tax_gst_rate) || 0) / 100 
+  const taxRate = settings?.tax_enabled === 'true' && settings?.tax_inclusive !== 'true'
+    ? (Number(settings.tax_gst_rate) || 0) / 100
     : 0;
   const taxes = subtotal * taxRate;
 
   const standardRate = Number(settings?.shipping_standard_rate) || 0;
   const expressRate = Number(settings?.shipping_express_rate) || 400;
   const freeThreshold = Number(settings?.shipping_free_threshold) || 0;
-  
+
   const isFreeStandard = freeThreshold > 0 && subtotal >= freeThreshold;
   // If a free_shipping coupon is applied, standard shipping is free. Express shipping is up to your business logic, but let's make all standard shipping free.
   const hasFreeShippingCoupon = appliedCoupon && appliedCoupon.discount_type === 'free_shipping';
   const actualStandardRate = (isFreeStandard || hasFreeShippingCoupon) ? 0 : standardRate;
 
-  const shippingCost = step >= 2 
-    ? (shippingMethod === 'express' ? expressRate : actualStandardRate) 
+  const shippingCost = step >= 2
+    ? (shippingMethod === 'express' ? expressRate : actualStandardRate)
     : 0;
 
   const total = Math.max(0, subtotal - (appliedCoupon?.discountAmount || 0) + taxes + shippingCost);
@@ -143,12 +143,12 @@ const Checkout = () => {
 
     if (step === 1) {
       if (
-        !addressData.firstName.trim() || 
-        !addressData.lastName.trim() || 
-        !addressData.address.trim() || 
-        !addressData.city.trim() || 
-        !addressData.state.trim() || 
-        !addressData.pinCode.trim() || 
+        !addressData.firstName.trim() ||
+        !addressData.lastName.trim() ||
+        !addressData.address.trim() ||
+        !addressData.city.trim() ||
+        !addressData.state.trim() ||
+        !addressData.pinCode.trim() ||
         !addressData.phone.trim()
       ) {
         setCheckoutError('Please fill in all mandatory fields (Name, Address, City, State, PIN code, Phone number).');
@@ -163,7 +163,7 @@ const Checkout = () => {
         navigate('/login');
         return;
       }
-      
+
       // Generate logical order number: ORD-YYYYMMDD-XXXX
       const date = new Date();
       const yyyy = date.getFullYear();
@@ -197,10 +197,10 @@ const Checkout = () => {
   return (
     <div className="checkout-page">
       <div className="checkout-container">
-        
+
         {/* Left Column - Forms */}
         <div className="checkout-main">
-          
+
           {/* Header & Breadcrumbs */}
           <div className="checkout-header">
             <Link to="/" className="checkout-logo">AURA</Link>
@@ -260,7 +260,7 @@ const Checkout = () => {
                       <option value="Bihar">Bihar</option>
                       <option value="Chandigarh">Chandigarh</option>
                       <option value="Chhattisgarh">Chhattisgarh</option>
-                      <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                      <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diuu</option>
                       <option value="Delhi">Delhi</option>
                       <option value="Goa">Goa</option>
                       <option value="Gujarat">Gujarat</option>
@@ -366,7 +366,7 @@ const Checkout = () => {
                 <div className="checkout-section">
                   <h2>Payment</h2>
                   <span className="secure-payment-note"><Lock size={14} /> All transactions are secure and encrypted.</span>
-                  
+
                   <div className="payment-accordion">
                     {/* Credit Card */}
                     <div className={`payment-method ${paymentMethod === 'credit_card' ? 'active' : ''}`}>
@@ -461,8 +461,8 @@ const Checkout = () => {
                           </span>
                         )}
                       </div>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => handleRemoveItem(item.id)}
                         style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                         title="Remove item"
@@ -489,11 +489,11 @@ const Checkout = () => {
               ) : (
                 <>
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    <input 
-                      type="text" 
-                      placeholder="Discount code" 
-                      className="checkout-input" 
-                      style={{ marginBottom: 0 }} 
+                    <input
+                      type="text"
+                      placeholder="Discount code"
+                      className="checkout-input"
+                      style={{ marginBottom: 0 }}
                       value={couponCodeInput}
                       onChange={(e) => setCouponCodeInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -505,9 +505,9 @@ const Checkout = () => {
                         }
                       }}
                     />
-                    <button 
+                    <button
                       type="button"
-                      className="btn-secondary" 
+                      className="btn-secondary"
                       style={{ padding: '0 20px', height: 'auto' }}
                       onClick={handleApplyCoupon}
                       disabled={validatingCoupon || !couponCodeInput.trim()}
