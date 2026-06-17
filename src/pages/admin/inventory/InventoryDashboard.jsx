@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Minus, Eye, X, Save } from 'lucide-react';
 import { getInventory, updateInventoryStock } from '../../../services/productService';
 import { updateProduct } from '../../../services/productService';
+import Loader from '../../../components/Loader';
 import toast from 'react-hot-toast';
 import '../AdminTables.css';
 import './Inventory.css';
@@ -293,7 +294,7 @@ const InventoryDashboard = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>Loading inventory...</td></tr>
+              <tr><td colSpan="6" style={{ padding: '40px 0' }}><Loader /></td></tr>
             ) : filtered.length === 0 ? (
               <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>No products found.</td></tr>
             ) : (

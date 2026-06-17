@@ -11,6 +11,7 @@ import {
 } from '../../../services/shippingService';
 import '../../admin/AdminTables.css';
 import '../../admin/AdminForms.css';
+import Loader from '../../../components/Loader';
 import './ShippingReturns.css';
 
 // ============================================================
@@ -490,7 +491,7 @@ const ShippingReturns = () => {
           </div>
 
           {loading ? (
-            <div className="sr-loading">Loading shipping zones...</div>
+            <div className="sr-loading" style={{ padding: '40px 0' }}><Loader /></div>
           ) : zones.length === 0 ? (
             <div className="sr-empty-state">
               <MapPin size={48} strokeWidth={1.2} />

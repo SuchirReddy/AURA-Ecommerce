@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Star, CheckCircle, XCircle } from 'lucide-react';
 import { getReviews, updateReviewStatus } from '../../../services/userService';
+import Loader from '../../../components/Loader';
 import '../AdminTables.css';
 
 const ReviewsList = () => {
@@ -70,7 +71,7 @@ const ReviewsList = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>Loading reviews...</td></tr>
+              <tr><td colSpan="6" style={{ padding: '40px 0' }}><Loader /></td></tr>
             ) : reviews.length === 0 ? (
               <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>No reviews found.</td></tr>
             ) : (

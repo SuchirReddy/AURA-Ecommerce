@@ -4,6 +4,8 @@ import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile } from '../../services/userService';
 import { supabase } from '../../lib/supabase';
 import { openCloudinaryWidget } from '../../services/cloudinaryService';
+import toast from 'react-hot-toast';
+import Loader from '../../components/Loader';
 
 const Settings = () => {
   const { user } = useUser();

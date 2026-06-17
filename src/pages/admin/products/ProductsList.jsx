@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Plus, Edit, Trash2 } from 'lucide-react';
 import { getProducts, deleteProduct } from '../../../services/productService';
+import Loader from '../../../components/Loader';
 import '../AdminTables.css';
 
 const ProductsList = () => {
@@ -75,7 +76,7 @@ const ProductsList = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>Loading...</td></tr>
+              <tr><td colSpan="7" style={{ padding: '40px 0' }}><Loader /></td></tr>
             ) : products.length === 0 ? (
               <tr><td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>No products found.</td></tr>
             ) : (

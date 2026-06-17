@@ -5,6 +5,7 @@ import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile } from '../services/userService';
 import { getCartItems, removeCartItem, updateCartItemQuantity } from '../services/cartService';
 import { getSiteSettings } from '../services/contentService';
+import Loader from '../components/Loader';
 import './Cart.css';
 
 const Cart = () => {
@@ -85,7 +86,7 @@ const Cart = () => {
         <h1 className="cart-title">Your Cart</h1>
         
         {loading ? (
-          <div style={{ padding: '40px', textAlign: 'center' }}>Loading cart...</div>
+          <div style={{ padding: '60px 0' }}><Loader /></div>
         ) : cartItems.length === 0 ? (
           <div style={{ padding: '60px', textAlign: 'center', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)' }}>
             <h2 style={{ marginBottom: '16px' }}>Your cart is empty</h2>

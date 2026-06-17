@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Star, Pencil, Trash2, X } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile, getUserAddresses, addAddress, updateAddress, deleteAddress, setDefaultAddress } from '../../services/userService';
+import Loader from '../../components/Loader';
 import toast from 'react-hot-toast';
 import './Addresses.css';
 
@@ -160,7 +161,7 @@ const Addresses = () => {
     }
   };
 
-  if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading addresses...</div>;
+  if (loading) return <Loader fullScreen />;
 
   return (
     <div className="addresses-page fade-in">

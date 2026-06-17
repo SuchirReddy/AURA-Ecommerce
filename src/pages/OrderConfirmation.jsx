@@ -34,7 +34,7 @@ const OrderConfirmation = () => {
   }, [location, navigate]);
 
   if (loading) {
-    return <div style={{ padding: '60px', textAlign: 'center' }}>Loading order details...</div>;
+    return <Loader fullScreen />;
   }
 
   if (!order) {

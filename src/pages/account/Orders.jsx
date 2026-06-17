@@ -3,6 +3,7 @@ import { Download, Package, Truck, Check, XCircle, AlertTriangle } from 'lucide-
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile } from '../../services/userService';
 import { getOrders, updateOrderStatus } from '../../services/orderService';
+import Loader from '../../components/Loader';
 import toast from 'react-hot-toast';
 import './Orders.css';
 
@@ -88,7 +89,7 @@ const Orders = () => {
     }
   };
 
-  if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading orders...</div>;
+  if (loading) return <Loader fullScreen />;
 
   return (
     <div className="orders-page fade-in">

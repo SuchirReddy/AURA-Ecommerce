@@ -7,6 +7,7 @@ import ProductGallery from '../components/product/ProductGallery';
 import ProductInfo from '../components/product/ProductInfo';
 import ProductTabs from '../components/product/ProductTabs';
 import ProductGrid from '../components/ProductGrid';
+import Loader from '../components/Loader';
 import { getProductById } from '../services/productService';
 import { getProductReviewStats, getProductReviews } from '../services/reviewService';
 import { syncUserProfile, toggleWishlist, getWishlist } from '../services/userService';
@@ -116,7 +117,60 @@ const ProductDetails = () => {
     const uid = userProfile ? userProfile.id : null;
     try {
       await addToCart(uid, productId, quantity, size, color);
-      toast.success("Added to cart!");
+      
+      toast.custom((t) => (
+        <div
+          style={{
+            opacity: t.visible ? 1 : 0,
+            transform: t.visible ? 'translateY(0)' : 'translateY(-20px)',
+            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            maxWidth: '400px',
+            width: '100%',
+            backgroundColor: 'var(--bg-primary)',
+            color: 'var(--text-primary)',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.12)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border)',
+            padding: '16px',
+            display: 'flex',
+            gap: '16px',
+            alignItems: 'center',
+            pointerEvents: 'auto',
+          }}
+        >
+          <div style={{ flexShrink: 0, width: '64px', height: '64px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+            <img 
+              src={product.images?.[0] || 'https://via.placeholder.com/64'} 
+              alt={product.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontWeight: '600', fontSize: '0.95rem', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: '#22c55e' }}>✓</span> Added to cart
+            </p>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+              <strong style={{ color: 'var(--text-primary)' }}>{product.name}</strong><br/>
+              {size ? (typeof size === 'string' ? size : size.size) : ''} {color ? `| ${color.name}` : ''} {quantity > 1 ? `| Qty: ${quantity}` : ''}
+            </p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button
+              onClick={() => { toast.dismiss(t.id); navigate('/cart'); }}
+              style={{ padding: '8px 12px', fontSize: '0.85rem', fontWeight: '600', background: 'var(--accent)', color: 'var(--bg-primary)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            >
+              View Cart
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              style={{ padding: '8px 12px', fontSize: '0.85rem', fontWeight: '500', background: 'transparent', color: 'var(--text-secondary)', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer' }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ), { duration: 4000 });
+      
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast.error("Failed to add to cart: " + (error.message || "Unknown error"));
@@ -139,7 +193,7 @@ const ProductDetails = () => {
   }, [id]);
 
   if (loading) {
-    return <div style={{ padding: '100px 20px', textAlign: 'center', color: 'var(--text-secondary)' }}>Loading product details...</div>;
+    return <Loader fullScreen />;
   }
 
   if (!product) {

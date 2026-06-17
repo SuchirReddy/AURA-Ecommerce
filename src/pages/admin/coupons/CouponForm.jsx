@@ -4,6 +4,7 @@ import { ChevronLeft } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { createCoupon, getCouponById, updateCoupon } from '../../../services/couponService';
+import Loader from '../../../components/Loader';
 import toast from 'react-hot-toast';
 import '../AdminForms.css';
 
@@ -99,7 +100,7 @@ const CouponForm = () => {
     }
   };
 
-  if (initialLoad) return <div style={{ padding: '40px' }}>Loading...</div>;
+  if (initialLoad) return <Loader fullScreen />;
 
   return (
     <div className="admin-coupon-form fade-in">

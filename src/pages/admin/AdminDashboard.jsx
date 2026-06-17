@@ -3,6 +3,8 @@ import { ArrowUpRight, ArrowDownRight, MoreHorizontal } from 'lucide-react';
 import { getOrders, getAnalyticsStats } from '../../services/orderService';
 import { getProducts } from '../../services/productService';
 import { getCustomers } from '../../services/userService';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import Loader from '../../components/Loader';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -11,7 +13,8 @@ const AdminDashboard = () => {
     ordersCount: 0,
     customersCount: 0,
     productsSold: 0,
-    trends: { revenue: null, orders: null, products: null }
+    trends: { revenue: null, orders: null, products: null },
+    dailyRevenue: []
   });
   const [recentOrders, setRecentOrders] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
@@ -32,7 +35,8 @@ const AdminDashboard = () => {
           ordersCount: stats.totalOrders,
           customersCount: customersData.length,
           productsSold: stats.productsSold,
-          trends: stats.trends || { revenue: null, orders: null, products: null }
+          trends: stats.trends || { revenue: null, orders: null, products: null },
+          dailyRevenue: stats.dailyRevenue || []
         });
 
         setRecentOrders(ordersData.slice(0, 5));
@@ -48,7 +52,7 @@ const AdminDashboard = () => {
   }, []);
 
   if (loading) {
-    return <div style={{ padding: '40px', textAlign: 'center' }}>Loading dashboard data...</div>;
+    return <Loader fullScreen />;
   }
 
   return (
@@ -131,22 +135,50 @@ const AdminDashboard = () => {
 
         {/* Left Column */}
         <div className="admin-col-large">
-          {/* Chart Placeholder */}
+          {/* Revenue Chart */}
           <div className="admin-card">
             <div className="admin-card-header">
               <h2>Revenue Overview</h2>
               <button className="admin-text-btn">View Report</button>
             </div>
-            <div className="admin-chart-placeholder">
-              <div className="chart-bars">
-                <div className="bar" style={{ height: '40%' }}></div>
-                <div className="bar" style={{ height: '60%' }}></div>
-                <div className="bar" style={{ height: '45%' }}></div>
-                <div className="bar" style={{ height: '80%' }}></div>
-                <div className="bar" style={{ height: '65%' }}></div>
-                <div className="bar" style={{ height: '90%' }}></div>
-                <div className="bar" style={{ height: '75%' }}></div>
-              </div>
+            <div className="admin-chart-container" style={{ height: '280px', width: '100%', marginTop: '20px' }}>
+              {metrics.dailyRevenue && metrics.dailyRevenue.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={metrics.dailyRevenue}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
+                    <XAxis 
+                      dataKey="date" 
+                      tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} 
+                      axisLine={false} 
+                      tickLine={false} 
+                      minTickGap={30}
+                    />
+                    <YAxis 
+                      tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tickFormatter={(value) => `₹${value}`}
+                    />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '8px' }}
+                      itemStyle={{ color: 'var(--text-primary)' }}
+                      formatter={(value) => [`₹${value}`, 'Revenue']}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="revenue" 
+                      stroke="var(--text-primary)" 
+                      strokeWidth={3} 
+                      dot={false} 
+                      activeDot={{ r: 6, fill: 'var(--bg-primary)', stroke: 'var(--text-primary)', strokeWidth: 2 }} 
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-secondary)' }}>
+                  No revenue data available for this period.
+                </div>
+              )}
             </div>
           </div>
 

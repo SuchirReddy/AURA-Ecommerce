@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ChevronLeft, Package, CreditCard, User, Truck, Calendar, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { getOrderById, updateOrderStatus } from '../../../services/orderService';
+import Loader from '../../../components/Loader';
 import '../AdminDetails.css';
 
 const OrderDetails = () => {
@@ -46,7 +47,7 @@ const OrderDetails = () => {
     }
   };
 
-  if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading order details...</div>;
+  if (loading) return <Loader fullScreen />;
   if (!order) return <div style={{ padding: '40px', textAlign: 'center' }}>Order not found.</div>;
 
   return (

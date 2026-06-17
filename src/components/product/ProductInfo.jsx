@@ -13,9 +13,9 @@ const ProductInfo = ({ product, onAddToCart }) => {
   const increaseQuantity = () => setQuantity(prev => prev + 1);
   const decreaseQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
-  const handleAddToCartClick = () => {
+  const handleAddToCartClick = async () => {
     if (onAddToCart) {
-      onAddToCart(product.id, quantity, selectedSize, selectedColor);
+      return await onAddToCart(product.id, quantity, selectedSize, selectedColor);
     }
   };
 
@@ -150,7 +150,7 @@ const ProductInfo = ({ product, onAddToCart }) => {
         >
           Add to Cart
         </button>
-        <button onClick={() => { handleAddToCartClick(); navigate('/checkout'); }} className="btn-secondary buy-now-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px solid var(--border)', background: 'transparent' }}>Buy Now</button>
+        <button onClick={async () => { await handleAddToCartClick(); navigate('/checkout'); }} className="btn-secondary buy-now-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px solid var(--border)', background: 'transparent' }}>Buy Now</button>
       </div>
 
       <div className="secondary-actions">

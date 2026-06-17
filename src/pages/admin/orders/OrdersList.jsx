@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ExternalLink } from 'lucide-react';
-import { getOrders } from '../../../services/orderService';
+import { getOrders, updateOrderStatus } from '../../../services/orderService';
+import Loader from '../../../components/Loader';
 import '../AdminTables.css';
 
 const OrdersList = () => {
@@ -71,7 +72,7 @@ const OrdersList = () => {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>Loading orders...</td></tr>
+              <tr><td colSpan="8" style={{ padding: '40px 0' }}><Loader /></td></tr>
             ) : orders.length === 0 ? (
               <tr><td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>No orders found.</td></tr>
             ) : (

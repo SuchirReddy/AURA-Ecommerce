@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Plus, Edit, Trash2 } from 'lucide-react';
 import { getCoupons, deleteCoupon, updateCoupon } from '../../../services/couponService';
+import Loader from '../../../components/Loader';
 import toast from 'react-hot-toast';
 import '../AdminTables.css';
 
@@ -47,7 +48,7 @@ const CouponsList = () => {
   };
 
   if (loading) {
-    return <div style={{ padding: '40px' }}>Loading coupons...</div>;
+    return <Loader fullScreen />;
   }
 
   return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, ArrowDownRight, Download, Calendar, Activity } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getAnalyticsStats } from '../../../services/orderService';
+import Loader from '../../../components/Loader';
 import './Analytics.css';
 import '../AdminDashboard.css';
 
@@ -33,7 +34,7 @@ const AnalyticsDashboard = () => {
   }, []);
 
   if (loading) {
-    return <div style={{ padding: '40px', textAlign: 'center' }}>Loading analytics...</div>;
+    return <Loader fullScreen />;
   }
 
   const renderTrend = (value) => {

@@ -4,6 +4,7 @@ import { Package, Heart, MapPin, CreditCard } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile, getUserAddresses, getWishlist } from '../../services/userService';
 import { getOrders } from '../../services/orderService';
+import Loader from '../../components/Loader';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -44,7 +45,7 @@ const Dashboard = () => {
     fetchData();
   }, [user]);
 
-  if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading...</div>;
+  if (loading) return <Loader fullScreen />;
 
   return (
     <div className="dashboard-overview fade-in">

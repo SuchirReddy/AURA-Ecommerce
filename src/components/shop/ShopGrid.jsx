@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { addToCart } from '../../services/cartService';
 import { syncUserProfile } from '../../services/userService';
+import Loader from '../Loader';
 import './ShopGrid.css';
 
 const ShopGrid = ({ products = [], loading = false }) => {
@@ -49,17 +50,8 @@ const ShopGrid = ({ products = [], loading = false }) => {
 
   if (loading) {
     return (
-      <div className="shop-grid-loading">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="shop-product-skeleton">
-            <div className="skeleton-image shimmer" />
-            <div className="skeleton-info">
-              <div className="skeleton-line short shimmer" />
-              <div className="skeleton-line shimmer" />
-              <div className="skeleton-line medium shimmer" />
-            </div>
-          </div>
-        ))}
+      <div style={{ padding: '80px 0', width: '100%' }}>
+        <Loader />
       </div>
     );
   }

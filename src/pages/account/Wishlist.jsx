@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Trash2 } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile, getWishlist, toggleWishlist } from '../../services/userService';
+import Loader from '../../components/Loader';
 
 const Wishlist = () => {
   const { user } = useUser();
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState(null);
+  const [profileId, setProfileId] = useState(null);
 
   useEffect(() => {
     const fetchWishlist = async () => {
       if (!user) return;
       try {
         const userProfile = await syncUserProfile(user);
-        setProfile(userProfile);
+        setProfileId(userProfile?.id);
         if (userProfile?.id) {
           const data = await getWishlist(userProfile.id);
           setWishlistItems(data || []);
@@ -30,16 +31,16 @@ const Wishlist = () => {
   }, [user]);
 
   const handleRemove = async (productId) => {
-    if (!profile) return;
+    if (!profileId) return;
     try {
-      await toggleWishlist(profile.id, productId);
+      await toggleWishlist(profileId, productId);
       setWishlistItems(wishlistItems.filter(item => item.product_id !== productId));
     } catch (error) {
       console.error("Error removing item:", error);
     }
   };
 
-  if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading wishlist...</div>;
+  if (loading) return <Loader fullScreen />;
 
   return (
     <div className="wishlist-page fade-in">

@@ -5,6 +5,7 @@ import Breadcrumbs from '../components/shop/Breadcrumbs';
 import { getCategories, getProducts } from '../services/productService';
 import ShopGrid from '../components/shop/ShopGrid';
 import ShopFilters from '../components/shop/ShopFilters';
+import Loader from '../components/Loader';
 import './Shop.css'; // Use Shop.css for guaranteed layout consistency
 
 const Category = () => {
@@ -185,7 +186,7 @@ const Category = () => {
 
         <main className="shop-main-content">
           {loading ? (
-            <div className="loading-state">Loading products...</div>
+            <div style={{ padding: '60px 0' }}><Loader /></div>
           ) : products.length > 0 ? (
             <ShopGrid products={products} />
           ) : (
