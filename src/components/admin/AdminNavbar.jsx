@@ -92,14 +92,7 @@ const AdminNavbar = ({ isSidebarOpen, setIsSidebarOpen, setIsMobileOpen }) => {
   return (
     <header className="admin-navbar">
       <div className="admin-navbar-left">
-        {/* Mobile Toggle */}
-        <button 
-          className="admin-icon-btn mobile-only" 
-          onClick={() => setIsMobileOpen(true)}
-          style={{ marginRight: '16px' }}
-        >
-          <Menu size={20} />
-        </button>
+
         
         {/* Desktop Toggle */}
         <button 

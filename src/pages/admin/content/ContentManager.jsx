@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, Save, Loader, Upload, X, ImagePlus, ChevronDown, ChevronUp } from 'lucide-react';
 import { getSiteSettings, updateSiteSettings } from '../../../services/contentService';
-import { openCloudinaryWidget } from '../../../services/cloudinaryService';
+import ImageUploader from '../../../components/ImageUploader';
 import toast from 'react-hot-toast';
 import '../AdminForms.css';
 
@@ -126,16 +126,7 @@ const ContentManager = () => {
     setter(prev => prev.map(b => b.id === id ? { ...b, [field]: value } : b));
   };
 
-  const handleUploadBannerImage = (type, id) => {
-    openCloudinaryWidget(
-      { maxFiles: 1, folder: 'banners' },
-      (error, result) => {
-        if (!error && result) {
-          handleUpdateBanner(type, id, 'image', result.secure_url);
-        }
-      }
-    );
-  };
+  // Removed handleUploadBannerImage since ImageUploader handles it natively
 
   const renderCarouselEditor = (title, desc, type, bannersList) => (
     <CollapsibleSection 
@@ -167,8 +158,13 @@ const ContentManager = () => {
                 </div>
               </div>
             ) : (
-              <div onClick={() => handleUploadBannerImage(type, banner.id)} style={{ height: '120px', border: '2px dashed var(--border)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', marginBottom: '16px' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>Click to upload image</span>
+              <div style={{ marginBottom: '16px' }}>
+                <ImageUploader 
+                  folder="banners"
+                  compact={true}
+                  buttonText="Upload banner image"
+                  onUploadComplete={(url) => handleUpdateBanner(type, banner.id, 'image', url)}
+                />
               </div>
             )}
 
@@ -248,65 +244,43 @@ const ContentManager = () => {
             <div className="form-group" style={{ marginBottom: '20px' }}>
               <label className="form-label">Banner Background Image</label>
               {settings.hero_banner_image ? (
-                <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                  <img
-                    src={settings.hero_banner_image}
-                    alt="Banner"
-                    style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
-                  />
-                  <div style={{ position: 'absolute', top: '8px', right: '8px', display: 'flex', gap: '6px' }}>
-                    <button
-                      onClick={() => openCloudinaryWidget({ maxFiles: 1, folder: 'banners' }, (error, result) => {
-                        if (!error && result) {
-                          handleChange('hero_banner_image', result.secure_url);
-                          toast.success('Banner uploaded');
-                        }
-                      })}
-                      style={{
-                        padding: '6px 12px', borderRadius: '8px', cursor: 'pointer',
-                        background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
-                        color: '#fff', fontSize: '0.8rem', fontWeight: '500', border: 'none',
-                        display: 'flex', alignItems: 'center', gap: '4px'
-                      }}
-                    >
-                      <Upload size={13} /> Replace
-                    </button>
-                    <button
-                      onClick={() => handleChange('hero_banner_image', '')}
-                      style={{
-                        padding: '6px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-                        background: 'rgba(255,59,48,0.8)', color: '#fff', display: 'flex',
-                        alignItems: 'center', justifyContent: 'center'
-                      }}
-                    ><X size={14} /></button>
+                <>
+                  <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', marginBottom: '12px' }}>
+                    <img
+                      src={settings.hero_banner_image}
+                      alt="Banner"
+                      style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
+                    />
+                    <div style={{ position: 'absolute', top: '8px', right: '8px', display: 'flex', gap: '6px' }}>
+                      <button
+                        onClick={() => handleChange('hero_banner_image', '')}
+                        style={{
+                          padding: '6px', borderRadius: '8px', border: 'none', cursor: 'pointer',
+                          background: 'rgba(255,59,48,0.8)', color: '#fff', display: 'flex',
+                          alignItems: 'center', justifyContent: 'center'
+                        }}
+                      ><X size={14} /></button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div
-                  onClick={() => openCloudinaryWidget({ maxFiles: 1, folder: 'banners' }, (error, result) => {
-                    if (!error && result) {
-                      handleChange('hero_banner_image', result.secure_url);
+                  <ImageUploader 
+                    folder="banners"
+                    compact={true}
+                    buttonText="Replace Banner Background"
+                    onUploadComplete={(url) => {
+                      handleChange('hero_banner_image', url);
                       toast.success('Banner uploaded');
-                    }
-                  })}
-                  style={{
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    gap: '10px', padding: '36px 20px', border: '2px dashed var(--border)',
-                    borderRadius: '12px', cursor: 'pointer', textAlign: 'center',
-                    background: 'rgba(255,255,255,0.03)',
-                    transition: 'border-color 0.2s'
+                    }}
+                  />
+                </>
+              ) : (
+                <ImageUploader 
+                  folder="banners"
+                  buttonText="Click or drag to upload banner image"
+                  onUploadComplete={(url) => {
+                    handleChange('hero_banner_image', url);
+                    toast.success('Banner uploaded');
                   }}
-                >
-                  <div style={{
-                    width: '56px', height: '56px', borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.08)', display: 'flex',
-                    alignItems: 'center', justifyContent: 'center'
-                  }}>
-                    <ImagePlus size={28} color="var(--text-secondary)" />
-                  </div>
-                  <div style={{ fontSize: '0.95rem', fontWeight: '500', color: 'var(--text-primary)' }}>Click to upload banner image</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Powered by Cloudinary. Recommended: 1920×800px</div>
-                </div>
+                />
               )}
             </div>
 

@@ -194,3 +194,29 @@
   background-color: rgba(255, 59, 48, 0.1);
   color: #ff3b30;
 }
+
+@media (max-width: 768px) {
+  .admin-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+  
+  .admin-filters-bar {
+    flex-direction: column;
+  }
+  
+  .admin-search-input-wrapper {
+    width: 100%;
+  }
+
+  .admin-filter-select {
+    width: 100%;
+  }
+  
+  .admin-pagination {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+  }
+}

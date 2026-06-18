@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, UploadCloud, X } from 'lucide-react';
 import { supabase } from '../../../lib/supabase';
-import { openCloudinaryWidget } from '../../../services/cloudinaryService';
+import ImageUploader from '../../../components/ImageUploader';
 import '../AdminForms.css';
 
 const CategoryForm = () => {
@@ -55,21 +55,7 @@ const CategoryForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleUploadImage = () => {
-    openCloudinaryWidget({ maxFiles: 1 }, (error, result) => {
-      if (!error && result) {
-        setFormData(prev => ({ ...prev, image_url: result.secure_url }));
-      }
-    });
-  };
-
-  const handleUploadBanner = () => {
-    openCloudinaryWidget({ maxFiles: 1 }, (error, result) => {
-      if (!error && result) {
-        setFormData(prev => ({ ...prev, banner_url: result.secure_url }));
-      }
-    });
-  };
+  // Removed handleUploadImage and handleUploadBanner since ImageUploader handles it internally
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -136,11 +122,7 @@ const CategoryForm = () => {
             <div className="form-row">
               <div className="form-group">
                 <label className="form-label">Thumbnail Image</label>
-                <div 
-                  className="media-upload-zone" 
-                  onClick={!formData.image_url ? handleUploadImage : undefined}
-                  style={{ position: 'relative', minHeight: formData.image_url ? 'auto' : '150px' }}
-                >
+                <div style={{ position: 'relative', minHeight: formData.image_url ? 'auto' : '150px' }}>
                   {formData.image_url ? (
                     <div style={{ position: 'relative', width: '150px', margin: '0 auto' }}>
                       <img src={formData.image_url} alt="Thumbnail" style={{ width: '100%', borderRadius: '8px', display: 'block' }} />
@@ -152,25 +134,19 @@ const CategoryForm = () => {
                       >
                         <X size={16} />
                       </button>
-                      <div onClick={handleUploadImage} style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', opacity: 0, borderRadius: '8px', transition: 'opacity 0.2s', cursor: 'pointer' }} onMouseEnter={(e) => e.currentTarget.style.opacity = 1} onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
-                        <span style={{ color: 'white', fontWeight: 500 }}>Change</span>
-                      </div>
                     </div>
                   ) : (
-                    <>
-                      <UploadCloud size={32} className="upload-icon" />
-                      <h4>Upload Thumbnail</h4>
-                    </>
+                    <ImageUploader 
+                      folder="categories"
+                      buttonText="Upload Thumbnail"
+                      onUploadComplete={(url) => setFormData(prev => ({ ...prev, image_url: url }))}
+                    />
                   )}
                 </div>
               </div>
               <div className="form-group">
                 <label className="form-label">Banner Image</label>
-                <div 
-                  className="media-upload-zone" 
-                  onClick={!formData.banner_url ? handleUploadBanner : undefined}
-                  style={{ position: 'relative', minHeight: formData.banner_url ? 'auto' : '150px' }}
-                >
+                <div style={{ position: 'relative', minHeight: formData.banner_url ? 'auto' : '150px' }}>
                   {formData.banner_url ? (
                     <div style={{ position: 'relative', width: '100%', margin: '0 auto' }}>
                       <img src={formData.banner_url} alt="Banner" style={{ width: '100%', maxHeight: '150px', objectFit: 'cover', borderRadius: '8px', display: 'block' }} />
@@ -182,15 +158,13 @@ const CategoryForm = () => {
                       >
                         <X size={16} />
                       </button>
-                      <div onClick={handleUploadBanner} style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', opacity: 0, borderRadius: '8px', transition: 'opacity 0.2s', cursor: 'pointer' }} onMouseEnter={(e) => e.currentTarget.style.opacity = 1} onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
-                        <span style={{ color: 'white', fontWeight: 500 }}>Change Banner</span>
-                      </div>
                     </div>
                   ) : (
-                    <>
-                      <UploadCloud size={32} className="upload-icon" />
-                      <h4>Upload Banner</h4>
-                    </>
+                    <ImageUploader 
+                      folder="categories"
+                      buttonText="Upload Banner"
+                      onUploadComplete={(url) => setFormData(prev => ({ ...prev, banner_url: url }))}
+                    />
                   )}
                 </div>
               </div>

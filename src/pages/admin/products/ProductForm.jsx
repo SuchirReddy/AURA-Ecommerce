@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, UploadCloud, X } from 'lucide-react';
 import { createProduct, updateProduct, getProductById, getCategories } from '../../../services/productService';
-import { openCloudinaryWidget } from '../../../services/cloudinaryService';
+import ImageUploader from '../../../components/ImageUploader';
 import '../AdminForms.css';
 
 const ProductForm = () => {
@@ -130,24 +130,7 @@ const ProductForm = () => {
     setFormData(prev => ({ ...prev, colors: newColors }));
   };
 
-  const handleUploadFeatured = () => {
-    openCloudinaryWidget({ maxFiles: 1 }, (error, result) => {
-      if (!error && result) {
-        setFormData(prev => ({ ...prev, featured_image: result.secure_url }));
-      }
-    });
-  };
-
-  const handleUploadGallery = () => {
-    openCloudinaryWidget({ multiple: true, maxFiles: 5 }, (error, result) => {
-      if (!error && result) {
-        setFormData(prev => ({ 
-          ...prev, 
-          gallery_images: [...prev.gallery_images, result.secure_url] 
-        }));
-      }
-    });
-  };
+  // Removed handleUploadFeatured and handleUploadGallery since ImageUploader handles it natively
 
   const removeGalleryImage = (index) => {
     const newGallery = [...formData.gallery_images];
@@ -233,11 +216,7 @@ const ProductForm = () => {
             <h2>Media</h2>
             <div className="form-group">
               <label className="form-label">Featured Image</label>
-              <div 
-                className="media-upload-zone" 
-                onClick={!formData.featured_image ? handleUploadFeatured : undefined}
-                style={{ position: 'relative', minHeight: formData.featured_image ? 'auto' : '150px' }}
-              >
+              <div style={{ position: 'relative', minHeight: formData.featured_image ? 'auto' : '150px' }}>
                 {formData.featured_image ? (
                   <div style={{ position: 'relative', width: '200px', margin: '0 auto' }}>
                     <img src={formData.featured_image} alt="Featured" style={{ width: '100%', borderRadius: '8px', display: 'block' }} />
@@ -249,16 +228,13 @@ const ProductForm = () => {
                     >
                       <X size={16} />
                     </button>
-                    <div onClick={handleUploadFeatured} style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', opacity: 0, borderRadius: '8px', transition: 'opacity 0.2s', cursor: 'pointer' }} onMouseEnter={(e) => e.currentTarget.style.opacity = 1} onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
-                      <span style={{ color: 'white', fontWeight: 500 }}>Change Image</span>
-                    </div>
                   </div>
                 ) : (
-                  <>
-                    <UploadCloud size={48} className="upload-icon" />
-                    <h3>Click to upload featured image</h3>
-                    <p>Powered by Cloudinary</p>
-                  </>
+                  <ImageUploader 
+                    folder="products"
+                    buttonText="Upload Featured Image"
+                    onUploadComplete={(url) => setFormData(prev => ({ ...prev, featured_image: url }))}
+                  />
                 )}
               </div>
             </div>
@@ -280,12 +256,21 @@ const ProductForm = () => {
                 ))}
                 
                 {formData.gallery_images.length < 5 && (
-                  <div 
-                    onClick={handleUploadGallery}
-                    style={{ width: '120px', height: '120px', border: '2px dashed var(--border)', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-secondary)' }}
-                  >
-                    <UploadCloud size={24} style={{ marginBottom: '8px' }} />
-                    <span style={{ fontSize: '0.8rem' }}>Add Image</span>
+                  <div style={{ width: '200px' }}>
+                    <ImageUploader 
+                      folder="products"
+                      compact={true}
+                      multiple={true}
+                      maxFiles={5 - formData.gallery_images.length}
+                      buttonText="Add Image"
+                      onUploadComplete={(urls) => {
+                        const newUrls = Array.isArray(urls) ? urls : [urls];
+                        setFormData(prev => ({ 
+                          ...prev, 
+                          gallery_images: [...prev.gallery_images, ...newUrls].slice(0, 5) 
+                        }));
+                      }}
+                    />
                   </div>
                 )}
               </div>

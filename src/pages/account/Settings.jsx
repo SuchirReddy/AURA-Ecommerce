@@ -3,7 +3,7 @@ import { Camera, Eye, EyeOff } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile } from '../../services/userService';
 import { supabase } from '../../lib/supabase';
-import { openCloudinaryWidget } from '../../services/cloudinaryService';
+import ImageUploader from '../../components/ImageUploader';
 import toast from 'react-hot-toast';
 import Loader from '../../components/Loader';
 
@@ -30,27 +30,22 @@ const Settings = () => {
     loadProfile();
   }, [user]);
 
-  const handleUploadAvatar = () => {
-    openCloudinaryWidget({ maxFiles: 1, cropping: true, croppingAspectRatio: 1 }, async (error, result) => {
-      if (!error && result) {
-        const newUrl = result.secure_url;
-        // Update local state for immediate feedback
-        setProfile(prev => ({ ...prev, avatar_url: newUrl }));
-        
-        // Save to Supabase
-        if (profile?.id) {
-          try {
-            await supabase
-              .from('profiles')
-              .update({ avatar_url: newUrl })
-              .eq('id', profile.id);
-          } catch (err) {
-            console.error("Error saving avatar to database:", err);
-            alert("Error saving your new profile picture.");
-          }
-        }
+  const handleUploadAvatarComplete = async (newUrl) => {
+    // Update local state for immediate feedback
+    setProfile(prev => ({ ...prev, avatar_url: newUrl }));
+    
+    // Save to Supabase
+    if (profile?.id) {
+      try {
+        await supabase
+          .from('profiles')
+          .update({ avatar_url: newUrl })
+          .eq('id', profile.id);
+      } catch (err) {
+        console.error("Error saving avatar to database:", err);
+        alert("Error saving your new profile picture.");
       }
-    });
+    }
   };
 
   if (loading) {
@@ -70,15 +65,14 @@ const Settings = () => {
               (profile?.full_name || 'U').charAt(0).toUpperCase()
             )}
           </div>
-          <div className="photo-actions">
-            <button 
-              className="btn-secondary small-btn" 
-              onClick={handleUploadAvatar}
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}
-            >
-              <Camera size={16} /> Change Photo
-            </button>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Powered by Cloudinary. JPG, GIF or PNG.</span>
+          <div className="photo-actions" style={{ maxWidth: '300px' }}>
+            <ImageUploader 
+              folder="avatars"
+              maxFiles={1}
+              buttonText="Change Photo"
+              compact={true}
+              onUploadComplete={handleUploadAvatarComplete}
+            />
           </div>
         </div>
 

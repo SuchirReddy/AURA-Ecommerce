@@ -1,6 +1,6 @@
 .admin-layout {
   display: flex;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--bg-primary); /* Uses storefront tokens */
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
@@ -90,28 +90,34 @@
 @media (max-width: 992px) {
   .admin-layout.sidebar-expanded .admin-sidebar,
   .admin-layout.sidebar-collapsed .admin-sidebar {
-    position: fixed;
-    left: -300px;
-    width: 280px;
-    transition: left var(--transition-normal);
+    display: none;
   }
   
   .admin-layout .admin-sidebar.mobile-open {
-    left: 0;
+    display: none;
   }
   
   .admin-sidebar-overlay {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 45;
+    display: none;
   }
   
   .admin-main-content {
     padding: var(--spacing-xl);
+    padding-bottom: 120px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-main-content {
+    padding: var(--spacing-md);
+    padding-bottom: 120px !important;
+  }
+  
+  .admin-navbar {
+    padding: 0 var(--spacing-md);
+  }
+  
+  .admin-layout {
+    overflow-x: hidden;
   }
 }

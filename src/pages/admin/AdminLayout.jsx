@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import AdminNavbar from '../../components/admin/AdminNavbar';
+import AdminMobileNav from '../../components/admin/AdminMobileNav';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
@@ -30,10 +31,7 @@ const AdminLayout = () => {
         </main>
       </div>
       
-      {/* Mobile Sidebar Overlay */}
-      {isMobileSidebarOpen && (
-        <div className="admin-sidebar-overlay" onClick={() => setIsMobileSidebarOpen(false)}></div>
-      )}
+      <AdminMobileNav />
 
     </div>
   );
