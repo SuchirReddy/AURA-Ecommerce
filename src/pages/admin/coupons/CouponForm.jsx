@@ -31,7 +31,7 @@ const CouponForm = () => {
     }
   }, [id]);
 
-  const fetchCoupon = async () => {
+  async function fetchCoupon() {
     try {
       const data = await getCouponById(id);
       setForm({

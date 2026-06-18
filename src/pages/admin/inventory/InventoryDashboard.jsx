@@ -174,7 +174,7 @@ const InventoryDashboard = () => {
 
   useEffect(() => { fetchInventory(); }, []);
 
-  const fetchInventory = async () => {
+  async function fetchInventory() {
     try {
       const data = await getInventory();
       // Fetch product sizes by joining — getInventory already joins products

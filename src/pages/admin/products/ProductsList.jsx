@@ -13,7 +13,7 @@ const ProductsList = () => {
     fetchProducts();
   }, []);
 
-  const fetchProducts = async () => {
+  async function fetchProducts() {
     try {
       const data = await getProducts();
       setProducts(data || []);

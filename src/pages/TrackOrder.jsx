@@ -27,7 +27,7 @@ const TrackOrder = () => {
     }
   }, [initialOrder, initialEmail]);
 
-  const handleSearch = async (e) => {
+  async function handleSearch(e) {
     if (e) e.preventDefault();
     if (!orderNumber.trim() || !email.trim()) {
       setError('Please provide both Order Number and Email Address.');

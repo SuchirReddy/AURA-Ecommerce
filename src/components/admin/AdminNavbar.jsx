@@ -52,7 +52,7 @@ const AdminNavbar = ({ isSidebarOpen, setIsSidebarOpen, setIsMobileOpen }) => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [showNotifs]);
 
-  const fetchUnreadCount = async () => {
+  async function fetchUnreadCount() {
     const count = await getUnreadCount();
     setUnreadCount(count);
   };

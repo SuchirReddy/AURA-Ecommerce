@@ -61,7 +61,7 @@ const Checkout = () => {
     }
   }, [user, isLoaded]);
 
-  const fetchCart = async () => {
+  async function fetchCart() {
     setLoading(true);
     try {
       if (user) {

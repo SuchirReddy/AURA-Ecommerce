@@ -12,7 +12,7 @@ const ReviewsList = () => {
     fetchReviewsData();
   }, []);
 
-  const fetchReviewsData = async () => {
+  async function fetchReviewsData() {
     try {
       const data = await getReviews();
       setReviews(data || []);

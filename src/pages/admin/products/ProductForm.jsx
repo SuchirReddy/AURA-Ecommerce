@@ -36,7 +36,7 @@ const ProductForm = () => {
     }
   }, [id]);
 
-  const loadCategories = async () => {
+  async function loadCategories() {
     try {
       const cats = await getCategories();
       setCategories(cats || []);
@@ -45,7 +45,7 @@ const ProductForm = () => {
     }
   };
 
-  const loadProduct = async () => {
+  async function loadProduct() {
     try {
       const p = await getProductById(id);
       

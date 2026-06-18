@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Check, Package, MapPin, Truck } from 'lucide-react';
 import { getOrderById } from '../services/orderService';
+import Loader from '../components/Loader';
 import './OrderConfirmation.css';
 
 const OrderConfirmation = () => {

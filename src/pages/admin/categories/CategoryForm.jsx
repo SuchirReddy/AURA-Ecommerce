@@ -26,7 +26,7 @@ const CategoryForm = () => {
     }
   }, [id]);
 
-  const loadCategory = async () => {
+  async function loadCategory() {
     try {
       const { data, error } = await supabase
         .from('categories')

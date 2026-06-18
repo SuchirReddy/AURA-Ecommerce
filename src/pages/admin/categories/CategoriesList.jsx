@@ -13,7 +13,7 @@ const CategoriesList = () => {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
+  async function fetchCategories() {
     try {
       const data = await getCategories();
       setCategories(data || []);

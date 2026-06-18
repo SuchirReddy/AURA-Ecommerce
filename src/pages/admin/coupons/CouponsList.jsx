@@ -14,7 +14,7 @@ const CouponsList = () => {
     fetchCoupons();
   }, []);
 
-  const fetchCoupons = async () => {
+  async function fetchCoupons() {
     try {
       const data = await getCoupons();
       setCoupons(data || []);

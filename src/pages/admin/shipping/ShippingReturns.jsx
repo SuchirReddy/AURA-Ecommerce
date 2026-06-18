@@ -363,7 +363,7 @@ const ShippingReturns = () => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+  async function fetchData() {
     setLoading(true);
     try {
       const [zonesData, policiesData] = await Promise.all([
