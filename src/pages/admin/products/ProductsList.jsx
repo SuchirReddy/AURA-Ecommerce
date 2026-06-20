@@ -8,15 +8,20 @@ import '../AdminTables.css';
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 50;
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [page]);
 
   async function fetchProducts() {
+    setLoading(true);
     try {
-      const data = await getProducts();
-      setProducts(data || []);
+      const result = await getProducts({ page, limit });
+      setProducts(result.data || []);
+      setTotalCount(result.count || 0);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -34,6 +39,8 @@ const ProductsList = () => {
       }
     }
   };
+
+  const totalPages = Math.ceil(totalCount / limit) || 1;
 
   return (
     <div className="admin-products-list fade-in">
@@ -123,6 +130,28 @@ const ProductsList = () => {
             )}
           </tbody>
         </table>
+
+        {!loading && totalCount > 0 && (
+          <div className="admin-pagination">
+            <span>Showing {(page - 1) * limit + 1} to {Math.min(page * limit, totalCount)} of {totalCount} products</span>
+            <div className="pagination-controls">
+              <button 
+                className="btn-secondary small-btn" 
+                disabled={page === 1}
+                onClick={() => setPage(p => p - 1)}
+              >
+                Previous
+              </button>
+              <button 
+                className="btn-secondary small-btn" 
+                disabled={page === totalPages}
+                onClick={() => setPage(p => p + 1)}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

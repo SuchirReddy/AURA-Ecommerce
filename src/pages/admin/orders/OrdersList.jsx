@@ -8,12 +8,17 @@ import '../AdminTables.css';
 const OrdersList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 50;
 
   useEffect(() => {
     const fetchOrders = async () => {
+      setLoading(true);
       try {
-        const data = await getOrders();
-        setOrders(data || []);
+        const result = await getOrders(null, page, limit);
+        setOrders(result.data || []);
+        setTotalCount(result.count || 0);
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -21,7 +26,9 @@ const OrdersList = () => {
       }
     };
     fetchOrders();
-  }, []);
+  }, [page]);
+
+  const totalPages = Math.ceil(totalCount / limit) || 1;
 
   return (
     <div className="admin-orders-list fade-in">
@@ -113,12 +120,24 @@ const OrdersList = () => {
           </tbody>
         </table>
 
-        {!loading && orders.length > 0 && (
+        {!loading && totalCount > 0 && (
           <div className="admin-pagination">
-            <span>Showing 1 to {orders.length} of {orders.length} orders</span>
+            <span>Showing {(page - 1) * limit + 1} to {Math.min(page * limit, totalCount)} of {totalCount} orders</span>
             <div className="pagination-controls">
-              <button className="btn-secondary small-btn" disabled>Previous</button>
-              <button className="btn-secondary small-btn" disabled>Next</button>
+              <button 
+                className="btn-secondary small-btn" 
+                disabled={page === 1}
+                onClick={() => setPage(p => p - 1)}
+              >
+                Previous
+              </button>
+              <button 
+                className="btn-secondary small-btn" 
+                disabled={page === totalPages}
+                onClick={() => setPage(p => p + 1)}
+              >
+                Next
+              </button>
             </div>
           </div>
         )}

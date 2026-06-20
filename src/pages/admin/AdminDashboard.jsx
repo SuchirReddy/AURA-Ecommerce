@@ -39,8 +39,8 @@ const AdminDashboard = () => {
           dailyRevenue: stats.dailyRevenue || []
         });
 
-        setRecentOrders(ordersData.slice(0, 5));
-        setLowStockProducts(productsData.filter(p => p.stock_quantity > 0 && p.stock_quantity <= 10).slice(0, 5));
+        setRecentOrders(ordersData.data.slice(0, 5));
+        setLowStockProducts(productsData.data.filter(p => p.stock_quantity > 0 && p.stock_quantity <= 10).slice(0, 5));
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {

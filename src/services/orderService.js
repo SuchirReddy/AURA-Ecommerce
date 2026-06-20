@@ -5,20 +5,26 @@ import { notifyNewOrder, notifyLowStock, notifyOrderStatusChange } from './notif
 // ==========================================
 // ORDERS
 // ==========================================
-export const getOrders = async (userId = null) => {
+export const getOrders = async (userId = null, page = 1, limit = 50) => {
   let query = supabase.from('orders').select(`
     *,
     profiles ( full_name, email ),
     order_items ( *, products (name, featured_image) )
-  `);
+  `, { count: 'exact' });
 
   if (userId) {
     query = query.eq('user_id', userId);
   }
 
-  const { data, error } = await query.order('created_at', { ascending: false });
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  const { data, error, count } = await query
+    .order('created_at', { ascending: false })
+    .range(from, to);
+    
   if (error) throw error;
-  return data;
+  return { data, count };
 };
 
 export const getOrderById = async (id) => {
@@ -203,123 +209,10 @@ export const trackOrder = async (orderNumber, email) => {
 // ANALYTICS
 // ==========================================
 export const getAnalyticsStats = async () => {
-  const { data: orders, error: ordersError } = await supabase
-    .from('orders')
-    .select('id, total_amount, created_at');
-  if (ordersError) throw ordersError;
-
-  const { data: orderItems, error: itemsError } = await supabase
-    .from('order_items')
-    .select('quantity, price, product_id, products(name, categories(name)), order_id');
-  if (itemsError) throw itemsError;
-
-  // Date boundaries
-  const now = new Date();
-  const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
-
-  const isThisMonth = o => new Date(o.created_at) >= thisMonthStart;
-  const isLastMonth = o => new Date(o.created_at) >= lastMonthStart && new Date(o.created_at) <= lastMonthEnd;
-
-  const thisMonthOrders = orders.filter(isThisMonth);
-  const lastMonthOrders = orders.filter(isLastMonth);
-
-  const thisMonthOrderIds = new Set(thisMonthOrders.map(o => o.id));
-  const lastMonthOrderIds = new Set(lastMonthOrders.map(o => o.id));
-
-  const thisMonthItems = orderItems.filter(i => thisMonthOrderIds.has(i.order_id));
-  const lastMonthItems = orderItems.filter(i => lastMonthOrderIds.has(i.order_id));
-
-  // Totals
-  const totalRevenue = orders.reduce((s, o) => s + (Number(o.total_amount) || 0), 0);
-  const totalOrders = orders.length;
-  const aov = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(0) : 0;
-  const productsSold = orderItems.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
-
-  // This month
-  const thisRevenue = thisMonthOrders.reduce((s, o) => s + (Number(o.total_amount) || 0), 0);
-  const thisOrders = thisMonthOrders.length;
-  const thisProducts = thisMonthItems.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
-
-  // Last month
-  const lastRevenue = lastMonthOrders.reduce((s, o) => s + (Number(o.total_amount) || 0), 0);
-  const lastOrders = lastMonthOrders.length;
-  const lastProducts = lastMonthItems.reduce((s, i) => s + (Number(i.quantity) || 0), 0);
-
-  // Trend helper: positive = up, negative = down, null = no previous data
-  const trend = (current, previous) => {
-    if (previous === 0) return current > 0 ? 100 : null;
-    return Number((((current - previous) / previous) * 100).toFixed(1));
-  };
-
-  // Top selling products & Categories
-  const productSales = {};
-  const categorySalesMap = {};
-  let totalValidItemsRevenue = 0;
-
-  orderItems.forEach(item => {
-    if (!item.products?.name) return;
-    const name = item.products.name;
-    const categoryName = item.products.categories?.name || 'Uncategorized';
-    const itemRevenue = item.quantity * item.price;
-
-    // Products
-    if (!productSales[name]) productSales[name] = { name, quantity: 0, revenue: 0 };
-    productSales[name].quantity += item.quantity;
-    productSales[name].revenue += itemRevenue;
-
-    // Categories
-    if (!categorySalesMap[categoryName]) categorySalesMap[categoryName] = 0;
-    categorySalesMap[categoryName] += itemRevenue;
-    totalValidItemsRevenue += itemRevenue;
-  });
-  const topProducts = Object.values(productSales).sort((a, b) => b.quantity - a.quantity).slice(0, 5);
-
-  // Format Sales by Category into percentages
-  const salesByCategory = Object.keys(categorySalesMap).map(cat => ({
-    name: cat,
-    revenue: categorySalesMap[cat],
-    percentage: totalValidItemsRevenue > 0 ? Math.round((categorySalesMap[cat] / totalValidItemsRevenue) * 100) : 0
-  })).sort((a, b) => b.revenue - a.revenue);
-
-  // Daily Revenue (last 30 days)
-  const dailyMap = {};
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
-    const dateStr = `${d.toLocaleString('default', { month: 'short' })} ${d.getDate()}`;
-    dailyMap[dateStr] = 0;
+  const { data, error } = await supabase.rpc('get_dashboard_analytics');
+  if (error) {
+    console.error("RPC Error:", error);
+    throw new Error("Failed to fetch analytics from database. Ensure the get_dashboard_analytics RPC function is installed.");
   }
-
-  orders.forEach(o => {
-    const d = new Date(o.created_at);
-    // Only include if it's within the last 30 days
-    if (now.getTime() - d.getTime() <= 30 * 24 * 60 * 60 * 1000) {
-      const dateStr = `${d.toLocaleString('default', { month: 'short' })} ${d.getDate()}`;
-      if (dailyMap[dateStr] !== undefined) {
-        dailyMap[dateStr] += (Number(o.total_amount) || 0);
-      }
-    }
-  });
-
-  const dailyRevenue = Object.keys(dailyMap).map(date => ({
-    date,
-    revenue: dailyMap[date]
-  }));
-
-  return {
-    totalRevenue,
-    totalOrders,
-    aov,
-    productsSold,
-    topProducts,
-    dailyRevenue,
-    salesByCategory,
-    trends: {
-      revenue: trend(thisRevenue, lastRevenue),
-      orders: trend(thisOrders, lastOrders),
-      products: trend(thisProducts, lastProducts),
-      aov: trend(aov, lastOrders > 0 ? (lastRevenue / lastOrders).toFixed(0) : 0)
-    }
-  };
+  return data;
 };

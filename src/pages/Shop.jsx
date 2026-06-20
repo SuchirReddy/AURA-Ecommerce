@@ -62,7 +62,7 @@ const Shop = () => {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getProducts({
+      const result = await getProducts({
         status: 'published',
         category_ids: filters.category_ids,
         price_min: filters.price_min,
@@ -71,7 +71,7 @@ const Shop = () => {
         sort: sortOption,
         search: searchQuery,
       });
-      setProducts(data);
+      setProducts(result.data || []);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {

@@ -7,7 +7,7 @@ export const getProducts = async (filters = {}) => {
   let query = supabase.from('products').select(`
     *,
     categories ( name, slug )
-  `);
+  `, { count: 'exact' });
 
   if (filters.status) query = query.eq('status', filters.status);
   if (filters.category_id) query = query.eq('category_id', filters.category_id);
@@ -43,9 +43,15 @@ export const getProducts = async (filters = {}) => {
       break;
   }
 
-  const { data, error } = await query;
+  if (filters.page && filters.limit) {
+    const from = (filters.page - 1) * filters.limit;
+    const to = from + filters.limit - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
   if (error) throw error;
-  return data;
+  return { data, count };
 };
 
 export const getProductById = async (id) => {

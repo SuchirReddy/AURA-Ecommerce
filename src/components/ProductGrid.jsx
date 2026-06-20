@@ -51,8 +51,8 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getProducts({ status: 'published' });
-        setProducts(data.slice(0, maxItems));
+        const result = await getProducts({ status: 'published' });
+        setProducts(result.data.slice(0, maxItems));
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {

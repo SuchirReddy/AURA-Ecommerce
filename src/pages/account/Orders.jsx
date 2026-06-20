@@ -63,8 +63,8 @@ const Orders = () => {
       try {
         const profile = await syncUserProfile(user);
         if (profile?.id) {
-          const data = await getOrders(profile.id);
-          setOrders(data || []);
+          const result = await getOrders(profile.id);
+          setOrders(result.data || []);
         }
       } catch (error) {
         console.error("Error fetching orders:", error);

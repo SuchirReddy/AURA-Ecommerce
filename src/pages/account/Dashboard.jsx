@@ -22,19 +22,19 @@ const Dashboard = () => {
         setProfile(userProfile);
 
         if (userProfile?.id) {
-          const [orders, addresses, wishlist] = await Promise.all([
+          const [ordersResponse, addresses, wishlist] = await Promise.all([
             getOrders(userProfile.id),
             getUserAddresses(userProfile.id),
             getWishlist(userProfile.id)
           ]);
 
           setMetrics({
-            orders: orders.length,
+            orders: ordersResponse.count || (ordersResponse.data ? ordersResponse.data.length : 0),
             addresses: addresses.length,
             wishlist: wishlist.length
           });
 
-          setRecentOrders(orders.slice(0, 2));
+          setRecentOrders(ordersResponse.data.slice(0, 2));
         }
       } catch (error) {
         console.error("Error fetching dashboard data:", error);

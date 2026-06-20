@@ -58,7 +58,7 @@ const Category = () => {
     if (!category) return;
     setLoading(true);
     try {
-      const data = await getProducts({
+      const result = await getProducts({
         status: 'published',
         category_ids: filters.category_ids.length > 0 ? filters.category_ids : [category.id],
         price_min: filters.price_min,
@@ -66,7 +66,7 @@ const Category = () => {
         in_stock_only: filters.in_stock_only,
         sort: sortOption,
       });
-      setProducts(data || []);
+      setProducts(result.data || []);
     } catch (error) {
       console.error("Error fetching category products:", error);
     } finally {
