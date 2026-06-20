@@ -65,6 +65,17 @@ const Navbar = () => {
     });
   };
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      const trimmed = searchQuery.trim();
+      if (trimmed && isSearchOpen) {
+        navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, isSearchOpen, navigate]);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     const trimmed = searchQuery.trim();

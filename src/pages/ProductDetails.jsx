@@ -24,6 +24,9 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   
   useEffect(() => {
     const fetchProductAndWishlist = async () => {
@@ -79,6 +82,9 @@ const ProductDetails = () => {
         };
         
         setProduct(enrichedProduct);
+        setSelectedColor(enrichedProduct.colors?.[0] || null);
+        setSelectedSize(enrichedProduct.sizes?.[0] || null);
+        setQuantity(1);
         setReviews(reviewList);
 
         // Fetch wishlist if user is logged in
@@ -224,6 +230,12 @@ const ProductDetails = () => {
             <ProductInfo 
               product={product} 
               onAddToCart={handleAddToCart}
+              selectedColor={selectedColor}
+              setSelectedColor={setSelectedColor}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
+              quantity={quantity}
+              setQuantity={setQuantity}
             />
             <ProductTabs product={product} reviews={reviews} />
           </div>
@@ -241,7 +253,12 @@ const ProductDetails = () => {
         <div className="sticky-bar-info">
           <span className="sticky-price">₹{product.sale_price || product.price}</span>
         </div>
-        <button className="btn-primary sticky-add-btn">Add to Cart</button>
+        <button 
+          className="btn-primary sticky-add-btn"
+          onClick={() => handleAddToCart(product.id, quantity, selectedSize, selectedColor)}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );

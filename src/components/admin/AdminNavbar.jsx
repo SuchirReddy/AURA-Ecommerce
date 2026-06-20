@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, Bell, Menu, Plus, User, Check, CheckCheck, Trash2, Package, AlertTriangle, ShoppingCart, X } from 'lucide-react';
 import { getNotifications, getUnreadCount, markAsRead, markAllAsRead, clearAllNotifications } from '../../services/notificationService';
 import './AdminNavbar.css';
@@ -111,9 +112,9 @@ const AdminNavbar = ({ isSidebarOpen, setIsSidebarOpen, setIsMobileOpen }) => {
       </div>
 
       <div className="admin-navbar-right">
-        <button className="admin-quick-action-btn hidden-mobile">
+        <Link to="/admin/products/new" className="btn-primary admin-quick-action-btn hidden-mobile">
           <Plus size={16} /> New Product
-        </button>
+        </Link>
         
         <button className="admin-icon-btn mobile-only">
           <Search size={20} />

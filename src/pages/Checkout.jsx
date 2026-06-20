@@ -488,7 +488,7 @@ const Checkout = () => {
                 </div>
               ) : (
                 <>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div className="promo-code-section">
                     <input
                       type="text"
                       placeholder="Discount code"

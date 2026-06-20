@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, Heart, ArrowRight } from 'lucide-react';
+import { Trash2, Heart, ArrowRight, ChevronLeft } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile } from '../services/userService';
 import { getCartItems, removeCartItem, updateCartItemQuantity } from '../services/cartService';
@@ -91,11 +91,16 @@ const Cart = () => {
           <div style={{ padding: '60px', textAlign: 'center', backgroundColor: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)' }}>
             <h2 style={{ marginBottom: '16px' }}>Your cart is empty</h2>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Looks like you haven't added anything yet.</p>
-            <Link to="/shop" className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>Shop Now</Link>
+            <Link to="/shop" className="btn-primary" style={{ textDecoration: 'none' }}>Shop Now</Link>
           </div>
         ) : (
           <>
-            <p className="cart-subtitle">{cartItems.length} items in your cart. <Link to="/shop">Continue shopping</Link></p>
+            <div className="cart-header-actions">
+              <p className="cart-subtitle" style={{ marginBottom: 0 }}>{cartItems.length} items in your cart.</p>
+              <Link to="/shop" className="continue-shopping-btn">
+                <ChevronLeft size={16} /> Continue Shopping
+              </Link>
+            </div>
             
             <div className="cart-layout">
               {/* Cart Items Column */}
@@ -178,7 +183,7 @@ const Cart = () => {
                     <button className="promo-btn">Apply</button>
                   </div>
 
-                  <Link to="/checkout" className="btn-primary checkout-btn" style={{ display: 'flex', textDecoration: 'none', justifyContent: 'center' }}>
+                  <Link to="/checkout" className="btn-primary checkout-btn" style={{ display: 'flex', textDecoration: 'none', justifyContent: 'center', alignItems: 'center' }}>
                     Proceed to Checkout <ArrowRight size={18} style={{ marginLeft: '8px' }} />
                   </Link>
                   

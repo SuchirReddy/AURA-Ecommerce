@@ -131,6 +131,34 @@ select.checkout-input {
   margin-top: -8px;
 }
 
+/* Promo Section */
+.promo-code-section {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  .promo-code-section {
+    flex-direction: column;
+  }
+  .promo-code-section .btn-secondary {
+    align-self: flex-start;
+    padding: 12px 24px !important;
+  }
+}
+
+.promo-code-section .checkout-input {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.promo-code-section .btn-secondary {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 /* Actions */
 .checkout-actions {
   display: flex;
@@ -446,7 +474,7 @@ select.checkout-input {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .input-row {
     flex-direction: column;
     gap: 0;
@@ -454,10 +482,15 @@ select.checkout-input {
   
   .checkout-actions {
     flex-direction: column-reverse;
+    align-items: center;
     gap: var(--spacing-lg);
+    width: 100%;
   }
   
   .checkout-next-btn {
     width: 100%;
+    align-self: center;
+    padding: 16px;
+    font-size: 1.05rem;
   }
 }

@@ -73,18 +73,13 @@
 
 /* Quick Actions */
 .admin-quick-action-btn {
-  display: flex;
-  align-items: center;
+  height: 36px !important;
+  padding: 0 16px !important;
+  font-size: 0.85rem !important;
+  text-transform: none;
+  letter-spacing: normal;
+  border-radius: var(--radius-full) !important;
   gap: 6px;
-  background-color: var(--text-primary);
-  color: var(--bg-primary);
-  border: none;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: opacity var(--transition-fast);
 }
 
 .admin-quick-action-btn:hover {

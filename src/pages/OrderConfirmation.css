@@ -145,12 +145,12 @@
 
 .continue-btn, .track-btn {
   flex: 1;
-  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   font-size: 1.1rem;
+  padding: 16px 24px;
 }
 
 .support-link {
@@ -188,7 +188,7 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .info-grid {
     grid-template-columns: 1fr;
   }

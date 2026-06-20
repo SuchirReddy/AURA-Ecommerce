@@ -3,11 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Heart, Share2, Star, X, Ruler } from 'lucide-react';
 import './ProductInfo.css';
 
-const ProductInfo = ({ product, onAddToCart }) => {
+const ProductInfo = ({ 
+  product, 
+  onAddToCart,
+  selectedColor,
+  setSelectedColor,
+  selectedSize,
+  setSelectedSize,
+  quantity,
+  setQuantity
+}) => {
   const navigate = useNavigate();
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [quantity, setQuantity] = useState(1);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   const increaseQuantity = () => setQuantity(prev => prev + 1);

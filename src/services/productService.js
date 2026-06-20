@@ -14,7 +14,9 @@ export const getProducts = async (filters = {}) => {
   if (filters.category_ids && filters.category_ids.length > 0) {
     query = query.in('category_id', filters.category_ids);
   }
-  if (filters.search) query = query.ilike('name', `%${filters.search}%`);
+  if (filters.search) {
+    query = query.or(`name.ilike.%${filters.search}%,description.ilike.%${filters.search}%`);
+  }
   if (filters.price_min != null && filters.price_min !== '') {
     query = query.gte('price', Number(filters.price_min));
   }

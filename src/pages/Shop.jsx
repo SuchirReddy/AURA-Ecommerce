@@ -4,6 +4,7 @@ import { Filter, ChevronDown } from 'lucide-react';
 import Breadcrumbs from '../components/shop/Breadcrumbs';
 import ShopFilters from '../components/shop/ShopFilters';
 import ShopGrid from '../components/shop/ShopGrid';
+import Pagination from '../components/shop/Pagination';
 import { getProducts, getCategories } from '../services/productService';
 import './Shop.css';
 
@@ -16,6 +17,9 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [activeFilterCount, setActiveFilterCount] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [limit, setLimit] = useState(20); // Number of products per page
 
   // Filter state
   const [filters, setFilters] = useState({
@@ -48,6 +52,11 @@ const Shop = () => {
 
   const toggleMobileFilters = () => setIsMobileFiltersOpen(!isMobileFiltersOpen);
 
+  // Reset page to 1 when search query changes
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery]);
+
   // Count active filters for the badge
   useEffect(() => {
     let count = 0;
@@ -58,7 +67,7 @@ const Shop = () => {
     setActiveFilterCount(count);
   }, [filters]);
 
-  // Fetch products whenever filters or sort change
+  // Fetch products whenever filters, sort or page change
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
@@ -70,14 +79,17 @@ const Shop = () => {
         in_stock_only: filters.in_stock_only,
         sort: sortOption,
         search: searchQuery,
+        page,
+        limit,
       });
       setProducts(result.data || []);
+      setTotalProducts(result.count || 0);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
-  }, [filters, sortOption, searchQuery]);
+  }, [filters, sortOption, searchQuery, page, limit]);
 
   useEffect(() => {
     fetchProducts();
@@ -85,6 +97,7 @@ const Shop = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
+    setPage(1);
   };
 
   const handleClearAll = () => {
@@ -94,6 +107,7 @@ const Shop = () => {
       price_max: '',
       in_stock_only: false,
     });
+    setPage(1);
     clearSearch();
   };
 
@@ -144,15 +158,33 @@ const Shop = () => {
         </button>
         
         <div className="shop-results-count">
-          {!loading && <span>{products.length} product{products.length !== 1 ? 's' : ''}</span>}
+          {!loading && <span>Showing {products.length} of {totalProducts} product{totalProducts !== 1 ? 's' : ''}</span>}
         </div>
 
         <div className="shop-sort">
+          <span className="sort-label">Show:</span>
+          <select 
+            className="sort-select limit-select" 
+            value={limit} 
+            onChange={(e) => {
+              setLimit(Number(e.target.value));
+              setPage(1);
+            }}
+            style={{ marginRight: '16px' }}
+          >
+            <option value="20">20</option>
+            <option value="40">40</option>
+            <option value="60">60</option>
+          </select>
+
           <span className="sort-label">Sort by:</span>
           <select 
             className="sort-select" 
             value={sortOption} 
-            onChange={(e) => setSortOption(e.target.value)}
+            onChange={(e) => {
+              setSortOption(e.target.value);
+              setPage(1);
+            }}
           >
             <option value="Newest">Newest</option>
             <option value="Best Selling">Best Selling</option>
@@ -221,7 +253,7 @@ const Shop = () => {
             </div>
             <div className="drawer-footer">
               <button className="btn-primary full-width" onClick={toggleMobileFilters}>
-                Show {products.length} Result{products.length !== 1 ? 's' : ''}
+                Show {totalProducts} Result{totalProducts !== 1 ? 's' : ''}
               </button>
             </div>
           </div>
@@ -230,6 +262,14 @@ const Shop = () => {
         {/* Product Grid */}
         <main className="shop-main-content">
           <ShopGrid products={products} loading={loading} />
+          
+          {!loading && totalProducts > limit && (
+            <Pagination 
+              currentPage={page}
+              totalPages={Math.ceil(totalProducts / limit)}
+              onPageChange={setPage}
+            />
+          )}
         </main>
       </div>
     </div>
