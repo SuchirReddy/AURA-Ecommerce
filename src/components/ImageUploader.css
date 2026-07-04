@@ -20,7 +20,7 @@
   background: rgba(0, 0, 0, 0.02);
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
   .image-uploader:hover {
     background: rgba(255, 255, 255, 0.02);
   }

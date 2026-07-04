@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import './index.css'
 import App from './App.jsx'
 import AuthSync from './components/auth/AuthSync'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -42,8 +43,10 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/" signInUrl="/login" signUpUrl="/signup">
-        <AuthSync />
-        <App />
+        <ThemeProvider>
+          <AuthSync />
+          <App />
+        </ThemeProvider>
       </ClerkProvider>
     </ErrorBoundary>
   </StrictMode>,

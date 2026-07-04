@@ -84,47 +84,34 @@
   min-height: 0;
 }
 
-.filter-checkbox-label {
+/* Category Pills Widget */
+.filter-pill-container {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  cursor: pointer;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  transition: color var(--transition-fast);
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.filter-checkbox-label:hover {
-  color: var(--text-primary);
-}
-
-.filter-checkbox-label input[type="checkbox"] {
-  appearance: none;
-  width: 18px;
-  height: 18px;
+.filter-pill {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--border);
-  border-radius: 4px;
   background-color: transparent;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  position: relative;
   transition: all var(--transition-fast);
 }
 
-.filter-checkbox-label input[type="checkbox"]:checked {
-  background-color: var(--text-primary);
+.filter-pill:hover {
   border-color: var(--text-primary);
+  color: var(--text-primary);
 }
 
-.filter-checkbox-label input[type="checkbox"]:checked::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 6px;
-  width: 4px;
-  height: 8px;
-  border: solid var(--bg-primary);
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+.filter-pill.active {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
 }
 
 .filter-count {
@@ -138,7 +125,32 @@
   letter-spacing: 2px;
 }
 
-/* Price Inputs */
+/* Price Widgets */
+.price-presets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: var(--spacing-md);
+}
+
+.price-preset-btn {
+  padding: 10px 14px;
+  background-color: var(--bg-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.price-preset-btn:hover {
+  background-color: var(--border);
+  transform: translateX(4px);
+}
+
 .price-inputs {
   display: flex;
   align-items: center;

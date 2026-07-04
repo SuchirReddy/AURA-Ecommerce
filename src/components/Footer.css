@@ -23,7 +23,7 @@
   filter: invert(1);
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
   .footer-logo-img {
     filter: invert(0);
   }

@@ -37,7 +37,7 @@
   letter-spacing: 2px;
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
   .stars {
     color: #fff;
   }

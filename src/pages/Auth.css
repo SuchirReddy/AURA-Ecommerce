@@ -294,7 +294,7 @@
   padding: var(--spacing-lg) !important;
 }
 
-@media (prefers-color-scheme: light) {
+[data-theme="light"] {
   .auth-form-column .cl-card {
     background: rgba(255, 255, 255, 0.65) !important;
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -361,7 +361,7 @@
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-@media (prefers-color-scheme: light) {
+[data-theme="light"] {
   .input-group .checkout-input {
     background: rgba(0, 0, 0, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -521,7 +521,7 @@
   backdrop-filter: blur(8px);
 }
 
-@media (prefers-color-scheme: light) {
+[data-theme="light"] {
   .btn-social {
     background: rgba(0, 0, 0, 0.02);
     border: 1px solid rgba(0, 0, 0, 0.1);

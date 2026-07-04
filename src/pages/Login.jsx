@@ -1,9 +1,12 @@
 import React from 'react';
 import { SignIn } from '@clerk/clerk-react';
 import { dark } from '@clerk/themes';
+import { useTheme } from '../contexts/ThemeContext';
 import './Auth.css';
 
 const Login = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   return (
     <div className="auth-page">
 
@@ -45,15 +48,15 @@ const Login = () => {
             fallbackRedirectUrl="/" 
             signUpUrl="/signup" 
             appearance={{
-              baseTheme: dark,
+              baseTheme: isDark ? dark : undefined,
               variables: {
                 colorBackground: 'transparent',
                 colorPrimary: '#6366f1',
                 colorTextOnPrimaryBackground: '#ffffff',
-                colorText: '#f5f5f7',
+                colorText: isDark ? '#f5f5f7' : '#1d1d1f',
                 colorTextSecondary: '#86868b',
-                colorInputBackground: 'rgba(255, 255, 255, 0.04)',
-                colorInputText: '#f5f5f7',
+                colorInputBackground: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                colorInputText: isDark ? '#f5f5f7' : '#1d1d1f',
                 borderRadius: '8px',
                 fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
               },
@@ -92,25 +95,27 @@ const Login = () => {
                 formFieldInput: {
                   borderRadius: '8px',
                   height: '48px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                  borderColor: 'rgba(255, 255, 255, 0.08)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)',
                   backdropFilter: 'blur(8px)',
                   transition: 'all 0.2s ease',
+                  color: isDark ? '#f5f5f7' : '#1d1d1f',
                 },
                 footerActionLink: {
                   color: '#6366f1',
                   fontWeight: '600',
                 },
                 socialButtonsBlockButton: {
-                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.02)',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.1)',
                   borderRadius: '8px',
                   height: '48px',
                   transition: 'all 0.2s ease',
                   backdropFilter: 'blur(8px)',
+                  color: isDark ? '#f5f5f7' : '#1d1d1f',
                 },
                 dividerLine: {
-                  background: 'rgba(255, 255, 255, 0.08)',
+                  background: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)',
                 },
                 dividerText: {
                   color: '#86868b',

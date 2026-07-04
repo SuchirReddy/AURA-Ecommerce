@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, User, Heart, Menu, X } from 'lucide-react';
+import { Search, ShoppingBag, User, Heart, Menu, X, Sun, Moon } from 'lucide-react';
 import { useUser } from '@clerk/clerk-react';
 import { syncUserProfile } from '../services/userService';
 import { getCartItems } from '../services/cartService';
+import { useTheme } from '../contexts/ThemeContext';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -15,6 +16,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useUser();
   const [cartCount, setCartCount] = useState(0);
+  const { theme, toggleTheme } = useTheme();
 
   const fetchCartCount = async () => {
     try {
@@ -50,10 +52,9 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Shop All', path: '/shop' },
-    { name: 'Men', path: '/category/menswear' },
-    { name: 'Women', path: '/category/womenswear' },
-    { name: 'Accessories', path: '/category/accessories' },
+    { name: 'Home', path: '/' },
+    { name: 'Shop', path: '/shop' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const toggleSearch = () => {
@@ -96,34 +97,35 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
         
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="mobile-menu-btn"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Left Side: Menu + Links */}
+        <div className="navbar-left">
+          <button 
+            className="mobile-menu-btn"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-        <Link to="/" className="navbar-logo">
+          <div className="navbar-links">
+            {navLinks.map((link) => (
+              <Link key={link.name} to={link.path} className="nav-link">
+                {link.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Center: Logo (Hidden when transparent at top) */}
+        <Link to="/" className={`navbar-logo ${!isScrolled ? 'logo-hidden' : ''}`}>
           <img src="/logo-white.png" alt="AURA Logo" className="navbar-logo-img" />
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="navbar-links">
-          {navLinks.map((link) => (
-            <Link key={link.name} to={link.path} className="nav-link">
-              {link.name}
-            </Link>
-          ))}
-        </div>
-
-        {/* Icons */}
+        {/* Right Side: Icons */}
         <div className="navbar-icons">
           <button className="icon-btn" onClick={toggleSearch} aria-label="Toggle search">
             {isSearchOpen ? <X size={20} /> : <Search size={20} />}
           </button>
           <Link to="/account" className="icon-btn hidden-mobile"><User size={20} /></Link>
-          <Link to="/account/wishlist" className="icon-btn hidden-mobile"><Heart size={20} /></Link>
           <Link to="/cart" className="icon-btn cart-btn">
             <ShoppingBag size={20} />
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}

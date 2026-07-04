@@ -1,80 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getSiteSettings } from '../services/contentService';
 import './Hero.css';
 
 const Hero = () => {
   const [content, setContent] = useState({
-    hero_badge: 'New Collection',
-    hero_title: 'Elevate Your Everyday Style.',
-    hero_subtitle: 'Discover the new standard of modern minimalism. Designed for those who appreciate the finer details.',
-    hero_cta_primary: 'Shop the Collection',
-    hero_cta_primary_url: '/shop',
-    hero_cta_secondary: 'Explore Lookbook',
-    hero_banner_image: '',
-    hero_enabled: 'true',
-    announcement_text: '',
-    announcement_enabled: 'false'
+    announcement_text: 'New season pieces, now live. Limited quantities available.',
+    announcement_enabled: 'true'
   });
 
   useEffect(() => {
     const fetchContent = async () => {
       try {
         const data = await getSiteSettings();
-        setContent(prev => ({ ...prev, ...data }));
-      } catch (err) {
-        // Fallback to defaults silently
-      }
+        if (data && data.announcement_enabled) {
+          setContent(prev => ({ ...prev, ...data }));
+        }
+      } catch (err) {}
     };
     fetchContent();
   }, []);
+
+  const scrollToNext = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <>
       {/* Announcement Bar */}
       {content.announcement_enabled === 'true' && content.announcement_text && (
-        <div style={{
-          background: 'var(--text-primary)', color: 'var(--bg-primary)',
-          textAlign: 'center', padding: '10px 16px', fontSize: '0.85rem',
-          fontWeight: '500', letterSpacing: '0.03em',
-          position: 'relative', zIndex: 101
-        }}>
-          {content.announcement_text}
+        <div className="announcement-bar">
+          <div className="announcement-track">
+             <span>{content.announcement_text}</span>
+             <span>{content.announcement_text}</span>
+             <span>{content.announcement_text}</span>
+             <span>{content.announcement_text}</span>
+          </div>
         </div>
       )}
 
-      <section className="hero">
-          <div className="hero-background" style={content.hero_enabled === 'true' && content.hero_banner_image ? {
-            backgroundImage: `url(${content.hero_banner_image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          } : {}}>
-            <div className="hero-overlay"></div>
-          </div>
+      <section className="hero-split">
+        <div className="hero-side hero-left">
+          <img src="/hero-left.png" alt="Men's New Season" className="hero-img" />
+        </div>
+        <div className="hero-side hero-right">
+          <img src="/hero-right.png" alt="Men's Essentials" className="hero-img" />
+        </div>
+        
+        <div className="hero-center-content">
+          <h1 className="hero-logo-text">aura<span className="hero-dot">.</span></h1>
+        </div>
 
-          <div className="container hero-content">
-            <span className="hero-badge">{content.hero_badge}</span>
-            <h1 className="hero-title">
-              {content.hero_title}
-            </h1>
-            <p className="hero-subtitle">
-              {content.hero_subtitle}
-            </p>
-
-            <div className="hero-actions">
-              <Link to={content.hero_cta_primary_url || '/shop'} className="btn-primary" style={{ textDecoration: 'none' }}>
-                {content.hero_cta_primary} <ArrowRight size={20} style={{ marginLeft: '8px' }} />
-              </Link>
-              {content.hero_cta_secondary && (
-                <button className="btn-secondary">
-                  {content.hero_cta_secondary}
-                </button>
-              )}
-            </div>
+        <div className="hero-bottom-center">
+          <Link to="/shop" className="btn-shop-now">Shop Now</Link>
+          <div className="hero-scroll-indicator" onClick={scrollToNext}>
+            <span>Scroll down to see more</span>
+            <ChevronDown size={20} />
           </div>
-        </section>
+        </div>
+      </section>
     </>
   );
 };

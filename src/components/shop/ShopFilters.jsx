@@ -95,19 +95,31 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
         {categories.length === 0 && (
           <span className="filter-empty">No categories available</span>
         )}
-        {categories.map((cat) => (
-          <label key={cat.id} className="filter-checkbox-label">
-            <input 
-              type="checkbox" 
-              checked={filters.category_ids.includes(cat.id)} 
-              onChange={() => handleCategoryToggle(cat.id)} 
-            />
-            <span>{cat.name}</span>
-          </label>
-        ))}
+        <div className="filter-pill-container">
+          <button 
+            className={`filter-pill ${filters.category_ids.length === 0 ? 'active' : ''}`}
+            onClick={() => onFilterChange({ category_ids: [] })}
+          >
+            All
+          </button>
+          {categories.map((cat) => (
+            <button 
+              key={cat.id}
+              className={`filter-pill ${filters.category_ids.includes(cat.id) ? 'active' : ''}`}
+              onClick={() => handleCategoryToggle(cat.id)}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
       </FilterSection>
 
       <FilterSection title="Price Range">
+        <div className="price-presets">
+          <button className="price-preset-btn" onClick={() => { handlePriceChange('price_min', ''); handlePriceChange('price_max', '1000'); }}>Under ₹1000</button>
+          <button className="price-preset-btn" onClick={() => { handlePriceChange('price_min', '1000'); handlePriceChange('price_max', '5000'); }}>₹1000 - ₹5000</button>
+          <button className="price-preset-btn" onClick={() => { handlePriceChange('price_min', '5000'); handlePriceChange('price_max', ''); }}>Over ₹5000</button>
+        </div>
         <div className="price-inputs">
           <div className="price-input-group">
             <span className="currency">₹</span>

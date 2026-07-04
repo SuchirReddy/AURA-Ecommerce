@@ -19,6 +19,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import TrackOrder from './pages/TrackOrder';
+import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AccountLayout from './pages/account/AccountLayout';
@@ -66,6 +67,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/track" element={<TrackOrder />} />
+            <Route path="/contact" element={<Contact />} />
             
             {/* Auth Routes */}
             <Route path="/login/*" element={<Login />} />
