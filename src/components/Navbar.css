@@ -42,14 +42,16 @@
 .navbar-left {
   display: flex;
   align-items: center;
-  gap: 3rem; /* Increased gap to push 'Home' more to the left / away from the hamburger */
+  gap: 3rem;
+  /* Increased gap to push 'Home' more to the left / away from the hamburger */
   flex: 1;
 }
 
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 2rem; /* Ensure links have good spacing */
+  gap: 2rem;
+  /* Ensure links have good spacing */
 }
 
 .navbar-logo {
@@ -124,7 +126,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1; /* Changed from 0.8 to match screenshot crispness */
+  opacity: 1;
+  /* Changed from 0.8 to match screenshot crispness */
   transition: opacity var(--transition-fast);
   background: none;
   border: none;
@@ -250,10 +253,11 @@
     border-radius: 999px;
     padding: 10px 16px;
   }
+
   .navbar-links {
     display: none;
   }
-  
+
   .hidden-mobile {
     display: none;
   }

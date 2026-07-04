@@ -8,8 +8,8 @@ const FilterSection = ({ title, defaultExpanded = true, children }) => {
 
   return (
     <div className="filter-section">
-      <button 
-        className="filter-section-header" 
+      <button
+        className="filter-section-header"
         onClick={() => setIsExpanded(!isExpanded)}
         aria-expanded={isExpanded}
       >
@@ -76,9 +76,9 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
     onFilterChange({ in_stock_only: !filters.in_stock_only });
   };
 
-  const hasActiveFilters = filters.category_ids.length > 0 
-    || filters.price_min !== '' 
-    || filters.price_max !== '' 
+  const hasActiveFilters = filters.category_ids.length > 0
+    || filters.price_min !== ''
+    || filters.price_max !== ''
     || filters.in_stock_only;
 
   return (
@@ -96,14 +96,14 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
           <span className="filter-empty">No categories available</span>
         )}
         <div className="filter-pill-container">
-          <button 
+          <button
             className={`filter-pill ${filters.category_ids.length === 0 ? 'active' : ''}`}
             onClick={() => onFilterChange({ category_ids: [] })}
           >
             All
           </button>
           {categories.map((cat) => (
-            <button 
+            <button
               key={cat.id}
               className={`filter-pill ${filters.category_ids.includes(cat.id) ? 'active' : ''}`}
               onClick={() => handleCategoryToggle(cat.id)}
@@ -123,10 +123,10 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
         <div className="price-inputs">
           <div className="price-input-group">
             <span className="currency">₹</span>
-            <input 
-              type="number" 
-              placeholder="Min" 
-              className="price-input" 
+            <input
+              type="number"
+              placeholder="Min"
+              className="price-input"
               value={priceMin}
               onChange={(e) => handlePriceChange('price_min', e.target.value)}
               min="0"
@@ -135,10 +135,10 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
           <span className="price-separator">–</span>
           <div className="price-input-group">
             <span className="currency">₹</span>
-            <input 
-              type="number" 
-              placeholder="Max" 
-              className="price-input" 
+            <input
+              type="number"
+              placeholder="Max"
+              className="price-input"
               value={priceMax}
               onChange={(e) => handlePriceChange('price_max', e.target.value)}
               min="0"
@@ -154,11 +154,11 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
         <label className="filter-toggle-label">
           <span>In Stock Only</span>
           <div className="toggle-switch">
-            <input 
-              type="checkbox" 
-              className="toggle-input" 
-              checked={filters.in_stock_only} 
-              onChange={handleStockToggle} 
+            <input
+              type="checkbox"
+              className="toggle-input"
+              checked={filters.in_stock_only}
+              onChange={handleStockToggle}
             />
             <span className="toggle-slider"></span>
           </div>

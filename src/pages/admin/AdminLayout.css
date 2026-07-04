@@ -9,21 +9,14 @@
 /* Fix all selects + option dropdowns in admin */
 .admin-layout select,
 .admin-layout select option {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   border-color: var(--border);
 }
 
 .admin-layout select:focus {
   outline: none;
   border-color: var(--accent);
-}
-
-.admin-filter-select,
-.admin-select,
-.checkout-input[type="text"],
-.checkout-input {
-  color-scheme: dark;
 }
 
 /* Sidebar Wrapper */

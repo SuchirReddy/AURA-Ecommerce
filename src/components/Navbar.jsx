@@ -96,10 +96,10 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container navbar-container">
-        
+
         {/* Left Side: Menu + Links */}
         <div className="navbar-left">
-          <button 
+          <button
             className="mobile-menu-btn"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -157,9 +157,9 @@ const Navbar = () => {
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-links">
           {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              to={link.path} 
+            <Link
+              key={link.name}
+              to={link.path}
               className="mobile-link"
               onClick={() => setIsMobileMenuOpen(false)}
             >

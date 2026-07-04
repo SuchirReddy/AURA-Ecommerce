@@ -299,9 +299,10 @@ const InventoryDashboard = () => {
               <tr><td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>No products found.</td></tr>
             ) : (
               filtered.map((item) => {
-                const qty = item.stock_quantity;
+                const sizesArr = parseSizes(item.products?.sizes);
+                const hasSizes = sizesArr.length > 0;
+                const qty = hasSizes ? sizesArr.reduce((sum, s) => sum + (parseInt(s.stock, 10) || 0), 0) : item.stock_quantity;
                 const isUpdating = updating === item.product_id;
-                const hasSizes = parseSizes(item.products?.sizes).length > 0;
                 return (
                   <tr key={item.id} style={{ opacity: isUpdating ? 0.6 : 1, transition: 'opacity 0.2s' }}>
                     <td>
@@ -317,33 +318,41 @@ const InventoryDashboard = () => {
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                        <button
-                          onClick={() => handleAdjust(item.product_id, -1)}
-                          disabled={isUpdating || qty === 0}
-                          style={{
-                            width: '30px', height: '30px', borderRadius: '6px',
-                            border: 'none',
-                            background: qty === 0 ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.12)',
-                            cursor: qty === 0 ? 'not-allowed' : 'pointer',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            color: 'var(--text-primary)', opacity: qty === 0 ? 0.3 : 1,
-                            transition: 'background 0.15s'
-                          }}
-                        ><Minus size={14} /></button>
-                        <span style={{ fontWeight: '700', fontSize: '1.05rem', minWidth: '32px', textAlign: 'center' }}>{qty}</span>
-                        <button
-                          onClick={() => handleAdjust(item.product_id, 1)}
-                          disabled={isUpdating}
-                          style={{
-                            width: '30px', height: '30px', borderRadius: '6px',
-                            border: 'none',
-                            background: 'rgba(255,255,255,0.12)',
-                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            color: 'var(--text-primary)',
-                            transition: 'background 0.15s'
-                          }}
-                        ><Plus size={14} /></button>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                          <button
+                            onClick={() => handleAdjust(item.product_id, -1)}
+                            disabled={isUpdating || qty === 0 || hasSizes}
+                            style={{
+                              width: '30px', height: '30px', borderRadius: '6px',
+                              border: 'none',
+                              background: (qty === 0 || hasSizes) ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.12)',
+                              cursor: (qty === 0 || hasSizes) ? 'not-allowed' : 'pointer',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              color: 'var(--text-primary)', opacity: (qty === 0 || hasSizes) ? 0.3 : 1,
+                              transition: 'background 0.15s'
+                            }}
+                          ><Minus size={14} /></button>
+                          <span style={{ fontWeight: '700', fontSize: '1.05rem', minWidth: '32px', textAlign: 'center' }}>{qty}</span>
+                          <button
+                            onClick={() => handleAdjust(item.product_id, 1)}
+                            disabled={isUpdating || hasSizes}
+                            style={{
+                              width: '30px', height: '30px', borderRadius: '6px',
+                              border: 'none',
+                              background: hasSizes ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.12)',
+                              cursor: hasSizes ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              color: 'var(--text-primary)',
+                              opacity: hasSizes ? 0.3 : 1,
+                              transition: 'background 0.15s'
+                            }}
+                          ><Plus size={14} /></button>
+                        </div>
+                        {hasSizes && (
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                            Auto-calculated
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td style={{ textAlign: 'center' }}>

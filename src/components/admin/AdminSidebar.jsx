@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, Tag, Layers, ShoppingCart, 
-  Users, Box, TicketPercent, Star, 
-  BarChart3, FileText, Settings, Truck 
+import {
+  LayoutDashboard, Tag, Layers, ShoppingCart,
+  Users, Box, TicketPercent, Star,
+  BarChart3, FileText, Settings, Truck
 } from 'lucide-react';
 import './AdminSidebar.css';
 
 const AdminSidebar = ({ isOpen, setIsOpen, isMobileOpen, setIsMobileOpen }) => {
-  
+
   const navGroups = [
     {
       title: 'Overview',
@@ -53,9 +53,9 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobileOpen, setIsMobileOpen }) => {
       <div className="admin-sidebar-header">
         <NavLink to="/admin" className="admin-logo" style={{ display: 'flex', alignItems: 'center', justifyContent: isOpen ? 'flex-start' : 'center', width: '100%' }}>
           {isOpen ? (
-            <img src="/logo-white.png" alt="AURA Admin" style={{ height: '28px' }} />
+            <div style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--text-primary)' }}>aura<span style={{ color: 'var(--accent)' }}>.</span></div>
           ) : (
-            <img src="/logo-white.png" alt="A" style={{ height: '24px', width: '24px', objectFit: 'cover', objectPosition: 'left' }} />
+            <div style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--text-primary)' }}>a<span style={{ color: 'var(--accent)' }}>.</span></div>
           )}
         </NavLink>
       </div>
@@ -67,7 +67,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobileOpen, setIsMobileOpen }) => {
             <ul className="admin-nav-list">
               {group.links.map((link) => (
                 <li key={link.name}>
-                  <NavLink 
+                  <NavLink
                     to={link.path}
                     end={link.end}
                     className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
@@ -89,8 +89,8 @@ const AdminSidebar = ({ isOpen, setIsOpen, isMobileOpen, setIsMobileOpen }) => {
 
         <ul className="admin-nav-list">
           <li>
-            <NavLink 
-              to="/admin/settings" 
+            <NavLink
+              to="/admin/settings"
               className={({ isActive }) => `admin-nav-item ${isActive ? 'active' : ''}`}
               title={!isOpen ? 'Settings' : ''}
               onClick={() => setIsMobileOpen(false)}

@@ -7,14 +7,26 @@
   font-weight: 500;
   overflow: hidden;
   white-space: nowrap;
-  position: relative;
-  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .announcement-track {
   display: flex;
-  justify-content: space-around;
-  min-width: 100%;
+  width: max-content;
+  animation: marquee 8s linear infinite;
+}
+
+.announcement-track:hover {
+  animation-play-state: paused;
 }
 
 .announcement-track span {

@@ -238,12 +238,12 @@
   border-radius: 50%;
 }
 
-.toggle-input:checked + .toggle-slider {
+.toggle-input:checked+.toggle-slider {
   background-color: var(--text-primary);
   border-color: var(--text-primary);
 }
 
-.toggle-input:checked + .toggle-slider:before {
+.toggle-input:checked+.toggle-slider:before {
   transform: translateX(16px);
   background-color: var(--bg-primary);
 }

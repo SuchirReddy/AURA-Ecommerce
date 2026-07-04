@@ -144,19 +144,22 @@ const ProductForm = () => {
     
     try {
       // Filter out sizes that have no name and stringify for TEXT[] column
-      const cleanSizes = formData.sizes
-        .filter(s => s.size && s.size.trim() !== '')
-        .map(s => JSON.stringify(s));
+      const cleanSizesObjs = formData.sizes.filter(s => s.size && s.size.trim() !== '');
+      const cleanSizes = cleanSizesObjs.map(s => JSON.stringify(s));
 
       const cleanColors = formData.colors
         .filter(c => c.name && c.name.trim() !== '')
         .map(c => JSON.stringify(c));
 
+      const calculatedStock = cleanSizesObjs.length > 0 
+        ? cleanSizesObjs.reduce((sum, s) => sum + (parseInt(s.stock, 10) || 0), 0)
+        : (parseInt(formData.stock_quantity, 10) || 0);
+
       const productPayload = {
         ...formData,
         price: parseFloat(formData.price) || 0,
         sale_price: formData.sale_price ? parseFloat(formData.sale_price) : null,
-        stock_quantity: parseInt(formData.stock_quantity, 10) || 0,
+        stock_quantity: calculatedStock,
         sizes: cleanSizes,
         colors: cleanColors,
         category_id: formData.category_id || null // Ensure empty string becomes null for database constraint
@@ -300,8 +303,19 @@ const ProductForm = () => {
               </div>
               <div className="form-group">
                 <label className="form-label">Global Stock</label>
-                <input type="number" name="stock_quantity" value={formData.stock_quantity} onChange={handleChange} className="form-input" placeholder="0" />
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Used if no specific sizes are defined.</p>
+                <input 
+                  type="number" 
+                  name="stock_quantity" 
+                  value={formData.sizes.length > 0 ? formData.sizes.reduce((sum, s) => sum + (parseInt(s.stock, 10) || 0), 0) : formData.stock_quantity} 
+                  onChange={handleChange} 
+                  className="form-input" 
+                  placeholder="0" 
+                  disabled={formData.sizes.length > 0}
+                  style={{ opacity: formData.sizes.length > 0 ? 0.6 : 1, cursor: formData.sizes.length > 0 ? 'not-allowed' : 'text' }}
+                />
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                  {formData.sizes.length > 0 ? 'Auto-calculated from size variants.' : 'Used if no specific sizes are defined.'}
+                </p>
               </div>
             </div>
             

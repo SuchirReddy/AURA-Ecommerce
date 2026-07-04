@@ -131,6 +131,12 @@
   border-color: var(--text-secondary);
 }
 
+.form-input[type="color"] {
+  padding: 2px;
+  height: 46px;
+  cursor: pointer;
+}
+
 .form-row {
   display: flex;
   gap: var(--spacing-md);

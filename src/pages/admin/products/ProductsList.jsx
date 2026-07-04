@@ -105,7 +105,30 @@ const ProductsList = () => {
                       {product.status}
                     </span>
                   </td>
-                  <td>{product.stock_quantity} in stock</td>
+                  <td>
+                    {(() => {
+                      let sizesArr = [];
+                      try {
+                        if (Array.isArray(product.sizes)) {
+                          sizesArr = product.sizes.map(s => typeof s === 'string' ? JSON.parse(s) : s);
+                        } else if (typeof product.sizes === 'string') {
+                          sizesArr = JSON.parse(product.sizes);
+                          if (!Array.isArray(sizesArr)) sizesArr = [sizesArr];
+                        }
+                      } catch (e) {
+                        sizesArr = [];
+                      }
+                      const hasSizes = sizesArr.length > 0;
+                      const trueStock = hasSizes ? sizesArr.reduce((sum, s) => sum + (parseInt(s.stock, 10) || 0), 0) : product.stock_quantity;
+                      
+                      return (
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span>{trueStock} in stock</span>
+                          {hasSizes && <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>(Auto-calculated)</span>}
+                        </div>
+                      );
+                    })()}
+                  </td>
                   <td>{product.categories?.name || 'Uncategorized'}</td>
                   <td>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>

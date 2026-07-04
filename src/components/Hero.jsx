@@ -17,7 +17,7 @@ const Hero = () => {
         if (data && data.announcement_enabled) {
           setContent(prev => ({ ...prev, ...data }));
         }
-      } catch (err) {}
+      } catch (err) { }
     };
     fetchContent();
   }, []);
@@ -35,10 +35,10 @@ const Hero = () => {
       {content.announcement_enabled === 'true' && content.announcement_text && (
         <div className="announcement-bar">
           <div className="announcement-track">
-             <span>{content.announcement_text}</span>
-             <span>{content.announcement_text}</span>
-             <span>{content.announcement_text}</span>
-             <span>{content.announcement_text}</span>
+            <span>{content.announcement_text}</span>
+            <span>{content.announcement_text}</span>
+            <span>{content.announcement_text}</span>
+            <span>{content.announcement_text}</span>
           </div>
         </div>
       )}
@@ -50,7 +50,7 @@ const Hero = () => {
         <div className="hero-side hero-right">
           <img src="/hero-right.png" alt="Men's Essentials" className="hero-img" />
         </div>
-        
+
         <div className="hero-center-content">
           <h1 className="hero-logo-text">aura<span className="hero-dot">.</span></h1>
         </div>
