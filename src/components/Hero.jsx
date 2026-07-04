@@ -31,17 +31,7 @@ const Hero = () => {
 
   return (
     <>
-      {/* Announcement Bar */}
-      {content.announcement_enabled === 'true' && content.announcement_text && (
-        <div className="announcement-bar">
-          <div className="announcement-track">
-            <span>{content.announcement_text}</span>
-            <span>{content.announcement_text}</span>
-            <span>{content.announcement_text}</span>
-            <span>{content.announcement_text}</span>
-          </div>
-        </div>
-      )}
+      {/* Announcement Bar removed */}
 
       <section className="hero-split">
         <div className="hero-side hero-left">

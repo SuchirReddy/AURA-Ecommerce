@@ -24,7 +24,7 @@ const Contact = () => {
               </div>
               <div className="info-content">
                 <h3>AURA Headquarters</h3>
-                <p>Bandra Kurla Complex (BKC)<br />Mumbai, Maharashtra 400051<br />India</p>
+                <p>HITEC City<br />Hyderabad, Telangana 500081<br />India</p>
               </div>
             </div>
 
@@ -53,7 +53,7 @@ const Contact = () => {
 
           <div className="map-container">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15082.903823483984!2d72.85967000216174!3d19.06480537024346!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8df0c3c8c7f%3A0x6b6c0c29f2249e0b!2sBandra%20Kurla%20Complex%2C%20Bandra%20East%2C%20Mumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://maps.google.com/maps?q=HITEC%20City,%20Hyderabad,%20Telangana&t=&z=13&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
