@@ -5,21 +5,14 @@ import { getSiteSettings } from '../services/contentService';
 import './Hero.css';
 
 const Hero = () => {
-  const [content, setContent] = useState({
-    announcement_text: 'New season pieces, now live. Limited quantities available.',
-    announcement_enabled: 'true'
-  });
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const data = await getSiteSettings();
-        if (data && data.announcement_enabled) {
-          setContent(prev => ({ ...prev, ...data }));
-        }
-      } catch (err) { }
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
     };
-    fetchContent();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToNext = () => {
@@ -31,21 +24,29 @@ const Hero = () => {
 
   return (
     <>
-      {/* Announcement Bar removed */}
-
       <section className="hero-split">
         <div className="hero-side hero-left">
-          <img src="/hero-left.png" alt="Men's New Season" className="hero-img" />
+          <img
+            src="/hero-left.png"
+            alt="Men's New Season"
+            className="hero-img"
+            style={{ transform: `translateY(${scrollY * 0.3}px) scale(1.3)` }}
+          />
         </div>
         <div className="hero-side hero-right">
-          <img src="/hero-right.png" alt="Men's Essentials" className="hero-img" />
+          <img
+            src="/hero-right.png"
+            alt="Men's Essentials"
+            className="hero-img"
+            style={{ transform: `translateY(${scrollY * 0.3}px) scale(1.7)` }}
+          />
         </div>
 
-        <div className="hero-center-content">
+        <div className="hero-center-content fade-up">
           <h1 className="hero-logo-text">aura<span className="hero-dot">.</span></h1>
         </div>
 
-        <div className="hero-bottom-center">
+        <div className="hero-bottom-center fade-up-delayed">
           <Link to="/shop" className="btn-shop-now">
             Shop Now <ArrowRight size={20} className="btn-arrow" />
           </Link>

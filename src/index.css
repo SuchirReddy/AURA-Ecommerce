@@ -2,17 +2,17 @@
 
 :root {
   /* Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f5f7;
+  --bg-primary: #faf8f5;
+  --bg-secondary: #f0eeeb;
   --text-primary: #1d1d1f;
   --text-secondary: #86868b;
   --accent: #000000;
   --accent-hover: #333333;
   --border: #e5e5ea;
-  
+
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -21,18 +21,18 @@
   --spacing-xl: 2rem;
   --spacing-2xl: 4rem;
   --spacing-3xl: 6rem;
-  
+
   /* Radii */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-full: 9999px;
-  
+
   /* Shadows */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
-  
+
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -77,7 +77,12 @@ button {
   background: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -104,7 +109,8 @@ img {
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
 
 /* Global Selects (Dropdowns) */
-select, select option {
+select,
+select option {
   font-family: 'Outfit', var(--font-family);
   font-weight: 500;
   letter-spacing: 0.02em;

@@ -4,7 +4,7 @@ import FeaturedCategories from '../components/FeaturedCategories';
 import ProductGrid from '../components/ProductGrid';
 import Testimonials from '../components/Testimonials';
 import Newsletter from '../components/Newsletter';
-import PromoCarousel from '../components/PromoCarousel';
+import Marquee from '../components/Marquee';
 import PromoBanner from '../components/PromoBanner';
 
 const Home = () => {
@@ -12,20 +12,30 @@ const Home = () => {
     <>
       <Hero />
       <FeaturedCategories />
-      <PromoCarousel settingsKey="homepage_promo_banners" />
       <ProductGrid title="New Arrivals" />
-      <PromoCarousel settingsKey="homepage_promo_banners_middle" />
+      
+      <Marquee 
+        items={[
+          { image: '/assets/cat_mens.png', alt: 'Mens Collection' },
+          { image: '/assets/cat_womens.png', alt: 'Womens Collection' },
+          { image: '/assets/cat_accessories.png', alt: 'Accessories' },
+          { image: '/assets/cat_lifestyle.png', alt: 'Lifestyle' },
+          { image: '/assets/premium_banner.png', alt: 'Premium Collection' }
+        ]} 
+        speed={40} 
+        reverse={true} 
+      />
+      
       <ProductGrid title="Best Sellers" />
       <PromoBanner 
         title="The AURA Collection"
         subtitle="Experience luxury redefined with our newest high-end apparel line."
         linkText="Explore Now"
         linkUrl="/shop"
-        image="/premium_banner_bottom.png"
+        image="/assets/premium_banner.png"
         reverse={true}
       />
       <Testimonials />
-      <Newsletter />
     </>
   );
 };
