@@ -43,7 +43,7 @@
   display: flex;
   align-items: flex-end;
   gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
 }
 
 .current-price {
@@ -62,15 +62,15 @@
   font-size: 1.1rem;
   line-height: 1.6;
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 /* Selectors */
 .selectors-container {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
 }
 
 .selector-header {
@@ -232,26 +232,26 @@
 }
 
 .add-to-cart-btn-large {
-  background: #c92a42 !important; /* Rose Red */
+  background: #2c2c2e !important; /* Dark Greyish */
   color: white !important;
-  border: 1px solid #c92a42 !important;
-  box-shadow: 0 4px 14px rgba(201, 42, 66, 0.3) !important;
+  border: 1px solid #2c2c2e !important;
+  box-shadow: 0 4px 14px rgba(44, 44, 46, 0.2) !important;
 }
 
 .add-to-cart-btn-large:hover {
-  background: #b02237 !important;
-  border-color: #b02237 !important;
+  background: #1c1c1e !important;
+  border-color: #1c1c1e !important;
   transform: translateY(-2px);
 }
 
 .buy-now-btn {
   background: transparent !important;
-  color: #c92a42 !important;
-  border: 1px solid #c92a42 !important;
+  color: #2c2c2e !important;
+  border: 1px solid #2c2c2e !important;
 }
 
 .buy-now-btn:hover {
-  background: rgba(201, 42, 66, 0.05) !important;
+  background: rgba(44, 44, 46, 0.05) !important;
   transform: translateY(-2px);
 }
 
@@ -282,7 +282,7 @@
 
 @media (max-width: 992px) {
   .short-description {
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
   }
 }
 
@@ -306,16 +306,16 @@
 
   .short-description {
     font-size: 0.95rem;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
   }
 
   .selectors-container {
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
   }
 
   .product-price-section {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
   }
 
   .add-to-cart-btn-large, .buy-now-btn {
