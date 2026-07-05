@@ -222,4 +222,10 @@
   .hero-bottom-center {
     bottom: 24px;
   }
+
+  .btn-shop-now {
+    padding: 12px 32px;
+    font-size: 0.95rem;
+    gap: 8px;
+  }
 }

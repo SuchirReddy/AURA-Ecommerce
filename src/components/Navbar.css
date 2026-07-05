@@ -246,7 +246,11 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-  .navbar, .navbar.scrolled {
+  .navbar {
+    padding: 16px 20px;
+  }
+
+  .navbar.scrolled {
     top: 10px;
     left: 16px;
     transform: none;
@@ -262,11 +266,6 @@
 
   .navbar-links {
     display: none;
-  }
-
-  .navbar-logo.logo-hidden {
-    opacity: 1;
-    pointer-events: auto;
   }
 
   .hidden-mobile {
