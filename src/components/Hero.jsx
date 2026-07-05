@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getSiteSettings } from '../services/contentService';
 import './Hero.css';
@@ -46,7 +46,9 @@ const Hero = () => {
         </div>
 
         <div className="hero-bottom-center">
-          <Link to="/shop" className="btn-shop-now">Shop Now</Link>
+          <Link to="/shop" className="btn-shop-now">
+            Shop Now <ArrowRight size={20} className="btn-arrow" />
+          </Link>
           <div className="hero-scroll-indicator" onClick={scrollToNext}>
             <span>Scroll down to see more</span>
             <ChevronDown size={20} />
