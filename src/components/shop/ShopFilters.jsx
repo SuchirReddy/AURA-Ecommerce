@@ -31,18 +31,7 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
   const [priceMax, setPriceMax] = useState(filters.price_max);
   const [priceTimer, setPriceTimer] = useState(null);
 
-  // Load categories from DB
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const data = await getCategories();
-        setCategories(data || []);
-      } catch (err) {
-        console.error('Failed to load categories:', err);
-      }
-    };
-    loadCategories();
-  }, []);
+
 
   // Sync local price state when filters are reset externally
   useEffect(() => {
@@ -50,14 +39,7 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
     setPriceMax(filters.price_max);
   }, [filters.price_min, filters.price_max]);
 
-  // Category toggle
-  const handleCategoryToggle = (categoryId) => {
-    const current = filters.category_ids;
-    const updated = current.includes(categoryId)
-      ? current.filter(id => id !== categoryId)
-      : [...current, categoryId];
-    onFilterChange({ category_ids: updated });
-  };
+
 
   // Debounced price change
   const handlePriceChange = (field, value) => {
@@ -91,28 +73,7 @@ const ShopFilters = ({ filters, onFilterChange, onClearAll }) => {
         </button>
       )}
 
-      <FilterSection title="Categories">
-        {categories.length === 0 && (
-          <span className="filter-empty">No categories available</span>
-        )}
-        <div className="filter-pill-container">
-          <button
-            className={`filter-pill ${filters.category_ids.length === 0 ? 'active' : ''}`}
-            onClick={() => onFilterChange({ category_ids: [] })}
-          >
-            All
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              className={`filter-pill ${filters.category_ids.includes(cat.id) ? 'active' : ''}`}
-              onClick={() => handleCategoryToggle(cat.id)}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
-      </FilterSection>
+
 
       <FilterSection title="Price Range">
         <div className="price-presets">

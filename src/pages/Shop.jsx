@@ -127,26 +127,7 @@ const Shop = () => {
         <h1 className="shop-title">{searchQuery ? `Results for "${searchQuery}"` : 'All Products'}</h1>
       </div>
 
-      {/* Mobile Category Selector */}
-      <div className="mobile-category-bar">
-        <div className="mobile-category-scroll">
-          <button
-            className={`mobile-category-pill ${filters.category_ids.length === 0 ? 'active' : ''}`}
-            onClick={() => handleMobileCategorySelect('')}
-          >
-            All
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              className={`mobile-category-pill ${filters.category_ids.includes(cat.id) ? 'active' : ''}`}
-              onClick={() => handleMobileCategorySelect(cat.id)}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
-      </div>
+
 
       {/* Toolbar: Mobile Filters Toggle & Sort Dropdown */}
       <div className="shop-toolbar">
@@ -192,6 +173,27 @@ const Shop = () => {
             <option value="Price High to Low">Price: High to Low</option>
             <option value="Most Popular">Most Popular</option>
           </select>
+        </div>
+      </div>
+
+      {/* Category Selector */}
+      <div className="category-bar">
+        <div className="category-scroll">
+          <button
+            className={`category-pill ${filters.category_ids.length === 0 ? 'active' : ''}`}
+            onClick={() => handleMobileCategorySelect('')}
+          >
+            All
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              className={`category-pill ${filters.category_ids.includes(cat.id) ? 'active' : ''}`}
+              onClick={() => handleMobileCategorySelect(cat.id)}
+            >
+              {cat.name}
+            </button>
+          ))}
         </div>
       </div>
 
