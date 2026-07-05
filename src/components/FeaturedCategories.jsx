@@ -14,8 +14,8 @@ const FeaturedCategories = () => {
     const fetchCategories = async () => {
       try {
         const data = await getCategories();
-        // Take up to 4 categories for the featured grid
-        setCategories(data.slice(0, 4));
+        // Take up to 6 categories for the featured grid
+        setCategories(data.slice(0, 6));
       } catch (error) {
         console.error("Error fetching categories:", error);
       } finally {
@@ -30,7 +30,7 @@ const FeaturedCategories = () => {
     if (!slider || isInteracting) return;
 
     let animationId;
-    const scrollStep = 0.5; // pixels per frame
+    const scrollStep = 1.5; // pixels per frame
     let scrollAccumulator = 0; // stores sub-pixel values
 
     const autoScroll = () => {
@@ -68,6 +68,10 @@ const FeaturedCategories = () => {
       imageSrc = '/assets/cat_mens.png';
     } else if (catName.includes('accessori')) {
       imageSrc = '/assets/cat_accessories.png';
+    } else if (catName.includes('footwear') || catName.includes('shoe')) {
+      imageSrc = '/assets/cat_footwear.png';
+    } else if (catName.includes('bag')) {
+      imageSrc = '/assets/cat_bags.png';
     }
     return (
     <Link 

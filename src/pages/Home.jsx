@@ -22,7 +22,7 @@ const Home = () => {
           { image: '/assets/cat_lifestyle.png', alt: 'Lifestyle' },
           { image: '/assets/premium_banner.png', alt: 'Premium Collection' }
         ]} 
-        speed={40} 
+        speed={20} 
         reverse={true} 
       />
       
