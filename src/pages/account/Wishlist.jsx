@@ -45,7 +45,7 @@ const Wishlist = () => {
   return (
     <div className="wishlist-page fade-in">
       <h1 className="account-section-title">Wishlist</h1>
-      
+
       {wishlistItems.length === 0 ? (
         <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' }}>Your wishlist is empty.</div>
       ) : (
@@ -59,8 +59,8 @@ const Wishlist = () => {
                   <Link to={`/product/${product.id}`}>
                     <img src={product.featured_image || 'https://via.placeholder.com/400x500?text=No+Image'} alt={product.name} className="product-image primary" />
                   </Link>
-                  <button 
-                    className="wishlist-btn active" 
+                  <button
+                    className="wishlist-btn active"
                     aria-label="Remove from wishlist"
                     onClick={() => handleRemove(product.id)}
                   >
@@ -68,7 +68,7 @@ const Wishlist = () => {
                   </button>
                   {product.sale_price && <span className="product-badge sale">Sale</span>}
                 </div>
-                
+
                 <div className="product-info">
                   <Link to={`/product/${product.id}`} className="product-name">{product.name}</Link>
                   <div className="product-price">

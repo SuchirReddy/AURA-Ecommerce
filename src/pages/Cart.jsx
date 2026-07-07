@@ -74,8 +74,8 @@ const Cart = () => {
     return acc + (itemPrice * item.quantity);
   }, 0);
 
-  const taxRate = settings?.tax_enabled === 'true' && settings?.tax_inclusive !== 'true' 
-    ? (Number(settings.tax_gst_rate) || 0) / 100 
+  const taxRate = settings?.tax_enabled === 'true' && settings?.tax_inclusive !== 'true'
+    ? (Number(settings.tax_gst_rate) || 0) / 100
     : 0;
   const taxes = subtotal * taxRate;
   const total = subtotal + taxes;
@@ -84,7 +84,7 @@ const Cart = () => {
     <div className="cart-page">
       <div className="container">
         <h1 className="cart-title">Your Cart</h1>
-        
+
         {loading ? (
           <div style={{ padding: '60px 0' }}><Loader /></div>
         ) : cartItems.length === 0 ? (
@@ -101,7 +101,7 @@ const Cart = () => {
                 <ChevronLeft size={16} /> Continue Shopping
               </Link>
             </div>
-            
+
             <div className="cart-layout">
               {/* Cart Items Column */}
               <div className="cart-items-column">
@@ -110,7 +110,7 @@ const Cart = () => {
                     <Link to={`/product/${item.product_id}`} className="cart-item-image-container">
                       <img src={item.products?.featured_image || 'https://via.placeholder.com/400?text=No+Image'} alt={item.products?.name} className="cart-item-image" />
                     </Link>
-                    
+
                     <div className="cart-item-details">
                       <div className="cart-item-header">
                         <Link to={`/product/${item.product_id}`} className="cart-item-name">{item.products?.name}</Link>
@@ -125,7 +125,7 @@ const Cart = () => {
                           )}
                         </div>
                       </div>
-                      
+
                       <div className="cart-item-variants">
                         {(item.size || item.color) && (
                           <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>
@@ -157,7 +157,7 @@ const Cart = () => {
               <div className="cart-summary-column">
                 <div className="order-summary-card">
                   <h2 className="summary-title">Order Summary</h2>
-                  
+
                   <div className="summary-row">
                     <span>Subtotal ({cartItems.length} items)</span>
                     <span>₹{subtotal.toLocaleString()}</span>
@@ -170,9 +170,9 @@ const Cart = () => {
                     <span>Estimated Taxes {settings?.tax_enabled === 'true' && settings?.tax_inclusive !== 'true' ? `(${settings?.tax_gst_rate || 0}%)` : '(Inclusive)'}</span>
                     <span>₹{taxes.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
-                  
+
                   <div className="summary-divider"></div>
-                  
+
                   <div className="summary-row total-row">
                     <span>Total</span>
                     <span>₹{total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -186,7 +186,7 @@ const Cart = () => {
                   <Link to="/checkout" className="btn-primary checkout-btn" style={{ display: 'flex', textDecoration: 'none', justifyContent: 'center', alignItems: 'center' }}>
                     Proceed to Checkout <ArrowRight size={18} style={{ marginLeft: '8px' }} />
                   </Link>
-                  
+
                   <div className="secure-checkout">
                     <span>Secure Checkout powered by AURA</span>
                   </div>

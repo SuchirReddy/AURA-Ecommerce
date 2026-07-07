@@ -20,19 +20,19 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
         <button className="close-modal-btn" onClick={onClose} aria-label="Close modal">
           <X size={20} />
         </button>
-        
+
         <div className="quick-view-image-container">
-          <img 
-            src={product.featured_image || 'https://via.placeholder.com/600x800?text=No+Image'} 
-            alt={product.name} 
-            className="quick-view-image" 
+          <img
+            src={product.featured_image || 'https://via.placeholder.com/600x800?text=No+Image'}
+            alt={product.name}
+            className="quick-view-image"
           />
         </div>
-        
+
         <div className="quick-view-details">
           <span className="qv-category">{product.categories?.name || 'Uncategorized'}</span>
           <h2 className="qv-title">{product.name}</h2>
-          
+
           <div className="qv-price-container">
             {product.sale_price ? (
               <>
@@ -43,13 +43,13 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
               <span className="qv-price">₹{product.price}</span>
             )}
           </div>
-          
+
           <div className="qv-description">
             <p>{product.description || 'No description available for this product. It is a premium offering from the Aura collection.'}</p>
           </div>
-          
+
           <div className="qv-actions">
-            <button className="qv-add-to-cart" onClick={(e) => { if(onAddToCart) onAddToCart(e, product); }}>
+            <button className="qv-add-to-cart" onClick={(e) => { if (onAddToCart) onAddToCart(e, product); }}>
               <ShoppingBag size={20} />
               Add to Cart
             </button>

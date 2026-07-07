@@ -1,0 +1,108 @@
+.trust-bar-section {
+  width: 100%;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-lg) 0;
+  overflow: hidden;
+}
+
+.trust-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--text-primary);
+  transition: transform var(--transition-normal);
+  cursor: default;
+}
+
+.trust-item:hover {
+  transform: translateY(-2px);
+}
+
+.trust-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(20, 20, 22, 0.05);
+  color: var(--text-primary);
+  transition: all var(--transition-normal);
+}
+
+[data-theme="dark"] .trust-icon-wrapper {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.trust-item:hover .trust-icon-wrapper {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+[data-theme="dark"] .trust-item:hover .trust-icon-wrapper {
+  background-color: #fff;
+  color: #000;
+}
+
+.trust-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.trust-title {
+  font-family: 'Outfit', var(--font-family);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.trust-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 992px) {
+  .trust-bar-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 576px) {
+  .trust-bar-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  .trust-icon-wrapper {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .trust-icon-wrapper svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .trust-title {
+    font-size: 0.8rem;
+  }
+  
+  .trust-subtitle {
+    font-size: 0.7rem;
+  }
+}

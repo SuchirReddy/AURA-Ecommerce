@@ -45,7 +45,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > window.innerHeight - 80);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -53,7 +53,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/shop' },
+    { name: 'Catalog', path: '/shop' },
     { name: 'Contact', path: '/contact' },
   ];
 

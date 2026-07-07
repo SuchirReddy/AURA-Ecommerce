@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Heart, Share2, Star, X, Ruler } from 'lucide-react';
 import './ProductInfo.css';
 
-const ProductInfo = ({ 
-  product, 
+const ProductInfo = ({
+  product,
   onAddToCart,
   selectedColor,
   setSelectedColor,

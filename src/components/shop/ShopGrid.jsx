@@ -18,24 +18,24 @@ const ShopGrid = ({ products = [], loading = false }) => {
   const handleAddToCart = async (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     try {
       let uid = null;
       if (user) {
         const profile = await syncUserProfile(user);
         if (profile) uid = profile.id;
       }
-      
+
       const sizeStr = Array.isArray(product.sizes) && product.sizes.length > 0 ? product.sizes[0] : null;
       let size = sizeStr;
       if (typeof sizeStr === 'string' && sizeStr.startsWith('{')) {
-        try { size = JSON.parse(sizeStr); } catch(err){}
+        try { size = JSON.parse(sizeStr); } catch (err) { }
       }
-      
+
       const colorStr = Array.isArray(product.colors) && product.colors.length > 0 ? product.colors[0] : null;
       let color = colorStr;
       if (typeof colorStr === 'string' && colorStr.startsWith('{')) {
-        try { color = JSON.parse(colorStr); } catch(err){}
+        try { color = JSON.parse(colorStr); } catch (err) { }
       } else if (typeof colorStr === 'string') {
         color = { name: colorStr, hex: '#000000' };
       }
@@ -82,7 +82,7 @@ const ShopGrid = ({ products = [], loading = false }) => {
               {product.sale_price && (
                 <span className="shop-product-badge sale">Sale</span>
               )}
-              
+
               {/* Wishlist Button - Top Right */}
               <button className="shop-action-btn wishlist-btn" aria-label="Add to Wishlist" onClick={(e) => e.preventDefault()}>
                 <Heart size={18} />
@@ -91,7 +91,7 @@ const ShopGrid = ({ products = [], loading = false }) => {
               {/* Images */}
               <img src={product.featured_image || 'https://via.placeholder.com/600x800?text=No+Image'} alt={product.name} className="shop-product-image primary" />
               <img src={product.gallery_images?.[0] || product.featured_image || 'https://via.placeholder.com/600x800?text=No+Image'} alt={`${product.name} alternate`} className="shop-product-image secondary" />
-              
+
               {/* Quick Actions - Bottom */}
               <div className="shop-quick-actions">
                 <button className="quick-action-btn" onClick={(e) => openQuickView(e, product)}>
@@ -103,7 +103,7 @@ const ShopGrid = ({ products = [], loading = false }) => {
                 </button>
               </div>
             </div>
-            
+
             <div className="shop-product-info">
               <span className="shop-product-category">{product.categories?.name || 'Uncategorized'}</span>
               <h3 className="shop-product-name">{product.name}</h3>
@@ -121,11 +121,11 @@ const ShopGrid = ({ products = [], loading = false }) => {
           </Link>
         ))}
       </div>
-      
+
       {/* Quick View Modal */}
       {quickViewProduct && (
-        <QuickViewModal 
-          product={quickViewProduct} 
+        <QuickViewModal
+          product={quickViewProduct}
           onClose={() => setQuickViewProduct(null)}
           onAddToCart={handleAddToCart}
         />

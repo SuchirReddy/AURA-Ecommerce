@@ -58,7 +58,7 @@ function App() {
       <div className="app">
         <Toaster position="top-center" />
         <Routes>
-          
+
           {/* Storefront Routes (with Navbar & Footer) */}
           <Route element={<StorefrontLayout />}>
             <Route path="/" element={<Home />} />
@@ -68,11 +68,11 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/track" element={<TrackOrder />} />
             <Route path="/contact" element={<Contact />} />
-            
+
             {/* Auth Routes */}
             <Route path="/login/*" element={<Login />} />
             <Route path="/signup/*" element={<Signup />} />
-            
+
             {/* Account Dashboard Routes */}
             <Route path="/account" element={<ProtectedRoute><AccountLayout /></ProtectedRoute>}>
               <Route index element={<Dashboard />} />
@@ -91,7 +91,7 @@ function App() {
           {/* Admin Routes (Standalone Layout) */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<AdminDashboard />} />
-            
+
             {/* Products & Categories */}
             <Route path="products" element={<ProductsList />} />
             <Route path="products/new" element={<ProductForm />} />
