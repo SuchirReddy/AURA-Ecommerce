@@ -7,6 +7,7 @@ import { getCartItems, clearCart, removeCartItem } from '../services/cartService
 import { createOrder } from '../services/orderService';
 import { getSiteSettings } from '../services/contentService';
 import { validateCoupon } from '../services/couponService';
+import { motion, AnimatePresence } from 'framer-motion';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -18,6 +19,40 @@ const Checkout = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [settings, setSettings] = useState(null);
   const [checkoutError, setCheckoutError] = useState('');
+
+  const [paymentStatus, setPaymentStatus] = useState('idle');
+  const [cardDetails, setCardDetails] = useState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvc: '',
+    focused: ''
+  });
+
+  const handleCardInputChange = (e) => {
+    let { name, value } = e.target;
+    // Basic formatting
+    if (name === 'number') {
+      value = value.replace(/\D/g, '').substring(0, 16);
+      value = value.replace(/(\d{4})/g, '$1 ').trim();
+    } else if (name === 'expiry') {
+      value = value.replace(/\D/g, '').substring(0, 4);
+      if (value.length >= 3) {
+        value = `${value.substring(0, 2)}/${value.substring(2)}`;
+      }
+    } else if (name === 'cvc') {
+      value = value.replace(/\D/g, '').substring(0, 4);
+    }
+    setCardDetails(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCardInputFocus = (e) => {
+    setCardDetails(prev => ({ ...prev, focused: e.target.name }));
+  };
+
+  const handleCardInputBlur = () => {
+    setCardDetails(prev => ({ ...prev, focused: '' }));
+  };
 
   useEffect(() => {
     getSiteSettings().then(setSettings);
@@ -185,10 +220,23 @@ const Checkout = () => {
       };
 
       try {
+        if (paymentMethod === 'credit_card') {
+          setPaymentStatus('processing');
+        }
+
         const newOrder = await createOrder(orderData, cartItems);
-        navigate('/confirmation', { state: { orderId: newOrder.id } });
+
+        if (paymentMethod === 'credit_card') {
+          setPaymentStatus('success');
+          setTimeout(() => {
+            navigate('/confirmation', { state: { orderId: newOrder.id } });
+          }, 2500);
+        } else {
+          navigate('/confirmation', { state: { orderId: newOrder.id } });
+        }
       } catch (error) {
         console.error("Error creating order:", error);
+        setPaymentStatus('idle');
         setCheckoutError(error.message || "Failed to place order. Please try again.");
       }
     }
@@ -199,7 +247,38 @@ const Checkout = () => {
       <div className="checkout-container">
 
         {/* Left Column - Forms */}
-        <div className="checkout-main">
+        <div className="checkout-main relative-container">
+
+          <AnimatePresence>
+            {paymentStatus !== 'idle' && (
+              <motion.div
+                className="payment-processing-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {paymentStatus === 'processing' ? (
+                  <motion.div className="processing-content" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                    <div className="payment-spinner"></div>
+                    <h3>Processing Payment</h3>
+                    <p>Please do not close this window or refresh the page.</p>
+                  </motion.div>
+                ) : (
+                  <motion.div className="success-content" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', bounce: 0.5 }}>
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                    >
+                      <CheckCircle2 size={72} className="success-icon" />
+                    </motion.div>
+                    <h3>Payment Successful!</h3>
+                    <p>Your order has been placed. Redirecting...</p>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Header & Breadcrumbs */}
           <div className="checkout-header">
@@ -381,13 +460,47 @@ const Checkout = () => {
                       </div>
                       {paymentMethod === 'credit_card' && (
                         <div className="payment-body">
-                          <div className="card-input-container">
-                            <input type="text" placeholder="Card number" className="checkout-input" required />
-                            <div className="input-row">
-                              <input type="text" placeholder="Expiration date (MM / YY)" className="checkout-input" required />
-                              <input type="text" placeholder="Security code" className="checkout-input" required />
+                          <div className="credit-card-wrapper">
+                            {/* Visual Card */}
+                            <div className={`visual-card-container ${cardDetails.focused === 'cvc' ? 'flipped' : ''}`}>
+                              <div className="visual-card">
+                                <div className="visual-card-front">
+                                  <div className="card-chip-container">
+                                    <div className="card-chip"></div>
+                                    <svg className="contactless-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14c-.3-1.6-.3-3.2 0-4.8" /><path d="M12 15.5c-.8-2.3-.8-4.7 0-7" /><path d="M15.5 17c-1.3-3.3-1.3-6.7 0-10" /></svg>
+                                  </div>
+                                  <div className="card-number">{cardDetails.number || '•••• •••• •••• ••••'}</div>
+                                  <div className="card-details-row">
+                                    <div className="card-holder">
+                                      <span className="card-label">CARDHOLDER NAME</span>
+                                      <span className="card-value">{cardDetails.name || 'YOUR NAME'}</span>
+                                    </div>
+                                    <div className="card-expiry">
+                                      <span className="card-label">EXPIRES</span>
+                                      <span className="card-value">{cardDetails.expiry || 'MM/YY'}</span>
+                                    </div>
+                                    <div className="card-logo">VISA</div>
+                                  </div>
+                                </div>
+                                <div className="visual-card-back">
+                                  <div className="card-stripe"></div>
+                                  <div className="card-cvc-box">
+                                    <span className="card-cvc-label">CVC</span>
+                                    <span className="card-cvc">{cardDetails.cvc || '•••'}</span>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <input type="text" placeholder="Name on card" className="checkout-input" required />
+
+                            {/* Inputs */}
+                            <div className="card-input-container">
+                              <input type="text" name="number" value={cardDetails.number} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Card number" className="checkout-input" required />
+                              <div className="input-row">
+                                <input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Expiration date (MM / YY)" className="checkout-input" required />
+                                <input type="password" name="cvc" value={cardDetails.cvc} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Security code (CVC)" className="checkout-input" required maxLength="4" />
+                              </div>
+                              <input type="text" name="name" value={cardDetails.name} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Name on card" className="checkout-input" required />
+                            </div>
                           </div>
                         </div>
                       )}
@@ -404,6 +517,34 @@ const Checkout = () => {
                           <Banknote size={20} />
                         </div>
                       </div>
+                      {paymentMethod === 'cod' && (
+                        <div className="payment-body">
+                          <div className="credit-card-wrapper" style={{ alignItems: 'center' }}>
+                            <div className="visual-card-container">
+                              <div className="visual-card">
+                                <div className="visual-card-front" style={{ background: 'radial-gradient(circle at 80% 20%, #059669, transparent 50%), linear-gradient(135deg, #065f46 0%, #047857 50%, #022c22 100%)' }}>
+                                  <div className="card-chip-container" style={{ justifyContent: 'center', marginTop: '16px' }}>
+                                    <Banknote size={48} color="rgba(255,255,255,0.9)" />
+                                  </div>
+                                  <div className="card-number" style={{ textAlign: 'center', fontSize: '1.3rem', letterSpacing: '2px', textShadow: '1px 1px 2px rgba(0,0,0,0.6)', marginTop: '24px', whiteSpace: 'nowrap' }}>
+                                    PAY ON DELIVERY
+                                  </div>
+                                  <div className="card-details-row" style={{ justifyContent: 'center', marginTop: 'auto' }}>
+                                    <span className="card-label" style={{ opacity: 0.9 }}>Hand cash to the executive</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="card-input-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', backgroundColor: 'var(--bg-primary)', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center', gap: '12px' }}>
+                              <Banknote size={32} color="var(--accent)" />
+                              <h3 style={{ margin: 0, fontSize: '1.2rem' }}>Cash on Delivery</h3>
+                              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: 0, lineHeight: 1.5 }}>
+                                You will pay exactly <strong>{settings?.store_currency_symbol || '₹'}{total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong> when your package arrives at your doorstep. Please keep exact change ready for a smoother experience.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

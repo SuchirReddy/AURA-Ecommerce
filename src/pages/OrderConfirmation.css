@@ -139,7 +139,8 @@
 /* Actions */
 .confirmation-actions {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
   margin-bottom: var(--spacing-xl);
 }
 
