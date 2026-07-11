@@ -304,16 +304,7 @@ const Checkout = () => {
             {/* Step 1: Information */}
             {step === 1 && (
               <div className="checkout-step fade-in">
-                <div className="checkout-section">
-                  <div className="section-header-flex">
-                    <h2>Contact Information</h2>
-                    {!user && <span>Already have an account? <Link to="/login">Log in</Link></span>}
-                  </div>
-                  <input type="email" placeholder="Email" defaultValue={user?.primaryEmailAddress?.emailAddress || ''} className="checkout-input" required />
-                  <label className="checkbox-label mt-sm">
-                    <input type="checkbox" /> Email me with news and offers
-                  </label>
-                </div>
+
 
                 <div className="checkout-section">
                   <h2>Shipping Address</h2>
@@ -385,12 +376,7 @@ const Checkout = () => {
             {step === 2 && (
               <div className="checkout-step fade-in">
                 <div className="info-review-box">
-                  <div className="review-row">
-                    <span className="review-label">Contact</span>
-                    <span className="review-value">{user?.primaryEmailAddress?.emailAddress || 'user@example.com'}</span>
-                    <button type="button" onClick={() => setStep(1)} className="review-change">Change</button>
-                  </div>
-                  <div className="review-divider"></div>
+
                   <div className="review-row">
                     <span className="review-label">Ship to</span>
                     <span className="review-value">Shipping address from Step 1</span>
@@ -429,12 +415,7 @@ const Checkout = () => {
             {step === 3 && (
               <div className="checkout-step fade-in">
                 <div className="info-review-box">
-                  <div className="review-row">
-                    <span className="review-label">Contact</span>
-                    <span className="review-value">{user?.primaryEmailAddress?.emailAddress || 'user@example.com'}</span>
-                    <button type="button" onClick={() => setStep(1)} className="review-change">Change</button>
-                  </div>
-                  <div className="review-divider"></div>
+
                   <div className="review-row">
                     <span className="review-label">Ship to</span>
                     <span className="review-value">{addressData.address}, {addressData.city}, {addressData.state} {addressData.pinCode}</span>
