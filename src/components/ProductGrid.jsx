@@ -19,6 +19,11 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
     e.preventDefault();
     e.stopPropagation();
     
+    if (product.stock_quantity <= 0) {
+      toast.error('Product is out of stock');
+      return;
+    }
+    
     try {
       let uid = null;
       if (user) {
@@ -95,10 +100,23 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
           {products.map((product) => (
             <Link to={`/product/${product.id}`} key={product.id} className="product-card">
               <div className="product-image-container">
+                {product.stock_quantity <= 0 && (
+                  <span className="product-badge out-of-stock">Out of Stock</span>
+                )}
                 <img src={product.featured_image || 'https://via.placeholder.com/400x500?text=No+Image'} alt={product.name} className="product-image" />
-                <button className="add-to-cart-btn" onClick={(e) => handleAddToCart(e, product)}>
-                  <ShoppingBag size={18} />
-                  <span>Add to Cart</span>
+                <button 
+                  className={`add-to-cart-btn ${product.stock_quantity <= 0 ? 'out-of-stock-btn' : ''}`} 
+                  onClick={(e) => handleAddToCart(e, product)} 
+                  disabled={product.stock_quantity <= 0}
+                >
+                  {product.stock_quantity <= 0 ? (
+                    <span style={{ margin: 0, display: 'block' }}>Out of Stock</span>
+                  ) : (
+                    <>
+                      <ShoppingBag size={18} />
+                      <span>Add to Cart</span>
+                    </>
+                  )}
                 </button>
               </div>
               <div className="product-info">

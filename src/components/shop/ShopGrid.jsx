@@ -19,6 +19,11 @@ const ShopGrid = ({ products = [], loading = false }) => {
     e.preventDefault();
     e.stopPropagation();
 
+    if (product.stock_quantity <= 0) {
+      toast.error('Product is out of stock');
+      return;
+    }
+
     try {
       let uid = null;
       if (user) {
@@ -79,8 +84,11 @@ const ShopGrid = ({ products = [], loading = false }) => {
           <Link to={`/product/${product.id}`} key={product.id} className="shop-product-card">
             <div className="shop-product-image-container">
               {/* Badges */}
-              {product.sale_price && (
-                <span className="shop-product-badge sale">Sale</span>
+              {product.stock_quantity <= 0 && (
+                <span className="shop-product-badge out-of-stock">Out of Stock</span>
+              )}
+              {product.sale_price && product.stock_quantity > 0 && (
+                <span className="shop-product-badge sale" style={{ position: 'absolute', top: '16px', left: '16px', zIndex: 2 }}>Sale</span>
               )}
 
               {/* Wishlist Button - Top Right */}
@@ -97,9 +105,19 @@ const ShopGrid = ({ products = [], loading = false }) => {
                 <button className="quick-action-btn" onClick={(e) => openQuickView(e, product)}>
                   <Eye size={18} />
                 </button>
-                <button className="quick-action-btn primary-action" onClick={(e) => handleAddToCart(e, product)}>
-                  <ShoppingBag size={18} />
-                  <span>Add to Cart</span>
+                <button 
+                  className={`quick-action-btn primary-action ${product.stock_quantity <= 0 ? 'out-of-stock-btn' : ''}`} 
+                  onClick={(e) => handleAddToCart(e, product)} 
+                  disabled={product.stock_quantity <= 0}
+                >
+                  {product.stock_quantity <= 0 ? (
+                    <span style={{ margin: 0, display: 'block' }}>Out of Stock</span>
+                  ) : (
+                    <>
+                      <ShoppingBag size={18} />
+                      <span>Add to Cart</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>

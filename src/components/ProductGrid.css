@@ -18,7 +18,7 @@
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--spacing-xl) var(--spacing-lg);
 }
 
@@ -33,6 +33,7 @@
   padding: 12px;
   background: var(--bg-secondary);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  min-width: 0;
 }
 
 .product-card:hover {
@@ -131,6 +132,22 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
+.add-to-cart-btn.out-of-stock-btn {
+  background-color: rgba(220, 38, 38, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--error);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  cursor: not-allowed;
+}
+
+.add-to-cart-btn.out-of-stock-btn:hover {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: var(--error);
+  transform: none;
+  box-shadow: none;
+}
+
 .product-info {
   display: flex;
   flex-direction: column;
@@ -168,15 +185,39 @@
   gap: 10px;
 }
 
+.product-badge.out-of-stock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(220, 38, 38, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 2;
+  white-space: normal;
+  text-align: center;
+  width: 90%;
+  max-width: fit-content;
+}
+
 @media (max-width: 1024px) {
   .product-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-lg) var(--spacing-md);
   }
   
@@ -197,7 +238,7 @@
 
 @media (max-width: 480px) {
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-md) var(--spacing-sm);
   }
 
@@ -220,6 +261,13 @@
 
   .product-price {
     font-size: 1rem;
+  }
+
+  .product-badge.out-of-stock {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    width: 95%;
   }
 }
 
