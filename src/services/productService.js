@@ -37,7 +37,7 @@ export const getProducts = async (filters = {}) => {
       break;
     case 'Best Selling':
     case 'Most Popular':
-      query = query.order('created_at', { ascending: false });
+      query = query.order('created_at', { ascending: true }); // Mock logic to differentiate from New Arrivals
       break;
     case 'Newest':
     default:

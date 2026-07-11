@@ -51,7 +51,11 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const result = await getProducts({ status: 'published' });
+        let sortOption = 'Newest';
+        if (title && title.toLowerCase().includes('best seller')) {
+          sortOption = 'Best Selling';
+        }
+        const result = await getProducts({ status: 'published', sort: sortOption });
         setProducts(result.data.slice(0, maxItems));
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -60,7 +64,7 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
       }
     };
     fetchProducts();
-  }, [maxItems]);
+  }, [maxItems, title]);
 
   if (loading) {
     return (
