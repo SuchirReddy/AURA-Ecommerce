@@ -6,8 +6,8 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer-container">
         <div className="footer-brand">
-          <a href="/" className="footer-logo-text" style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--text-primary)', textDecoration: 'none', display: 'block', marginBottom: 'var(--spacing-md)' }}>
-            aura<span style={{ color: 'var(--accent)' }}>.</span>
+          <a href="/" className="footer-logo-text">
+            aura<span className="footer-logo-accent">.</span>
           </a>
           <p className="footer-description">
             Redefining modern minimalism. Premium quality apparel and accessories for the everyday.

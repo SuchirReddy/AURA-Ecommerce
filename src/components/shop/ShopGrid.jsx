@@ -84,9 +84,7 @@ const ShopGrid = ({ products = [], loading = false }) => {
           <Link to={`/product/${product.id}`} key={product.id} className="shop-product-card">
             <div className="shop-product-image-container">
               {/* Badges */}
-              {product.stock_quantity <= 0 && (
-                <span className="shop-product-badge out-of-stock">Out of Stock</span>
-              )}
+
               {product.sale_price && product.stock_quantity > 0 && (
                 <span className="shop-product-badge sale" style={{ position: 'absolute', top: '16px', left: '16px', zIndex: 2 }}>Sale</span>
               )}
@@ -105,9 +103,9 @@ const ShopGrid = ({ products = [], loading = false }) => {
                 <button className="quick-action-btn" onClick={(e) => openQuickView(e, product)}>
                   <Eye size={18} />
                 </button>
-                <button 
-                  className={`quick-action-btn primary-action ${product.stock_quantity <= 0 ? 'out-of-stock-btn' : ''}`} 
-                  onClick={(e) => handleAddToCart(e, product)} 
+                <button
+                  className={`quick-action-btn primary-action ${product.stock_quantity <= 0 ? 'out-of-stock-btn' : ''}`}
+                  onClick={(e) => handleAddToCart(e, product)}
                   disabled={product.stock_quantity <= 0}
                 >
                   {product.stock_quantity <= 0 ? (

@@ -18,29 +18,29 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
   const handleAddToCart = async (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (product.stock_quantity <= 0) {
       toast.error('Product is out of stock');
       return;
     }
-    
+
     try {
       let uid = null;
       if (user) {
         const profile = await syncUserProfile(user);
         if (profile) uid = profile.id;
       }
-      
+
       const sizeStr = Array.isArray(product.sizes) && product.sizes.length > 0 ? product.sizes[0] : null;
       let size = sizeStr;
       if (typeof sizeStr === 'string' && sizeStr.startsWith('{')) {
-        try { size = JSON.parse(sizeStr); } catch(err){}
+        try { size = JSON.parse(sizeStr); } catch (err) { }
       }
-      
+
       const colorStr = Array.isArray(product.colors) && product.colors.length > 0 ? product.colors[0] : null;
       let color = colorStr;
       if (typeof colorStr === 'string' && colorStr.startsWith('{')) {
-        try { color = JSON.parse(colorStr); } catch(err){}
+        try { color = JSON.parse(colorStr); } catch (err) { }
       } else if (typeof colorStr === 'string') {
         color = { name: colorStr, hex: '#000000' };
       }
@@ -95,18 +95,16 @@ const ProductGrid = ({ title, maxItems = 4 }) => {
           <h2 className="section-title">{title}</h2>
           <Link to="/shop" className="view-all-link">View All</Link>
         </div>
-        
+
         <div className="product-grid">
           {products.map((product) => (
             <Link to={`/product/${product.id}`} key={product.id} className="product-card">
               <div className="product-image-container">
-                {product.stock_quantity <= 0 && (
-                  <span className="product-badge out-of-stock">Out of Stock</span>
-                )}
+
                 <img src={product.featured_image || 'https://via.placeholder.com/400x500?text=No+Image'} alt={product.name} className="product-image" />
-                <button 
-                  className={`add-to-cart-btn ${product.stock_quantity <= 0 ? 'out-of-stock-btn' : ''}`} 
-                  onClick={(e) => handleAddToCart(e, product)} 
+                <button
+                  className={`add-to-cart-btn ${product.stock_quantity <= 0 ? 'out-of-stock-btn' : ''}`}
+                  onClick={(e) => handleAddToCart(e, product)}
                   disabled={product.stock_quantity <= 0}
                 >
                   {product.stock_quantity <= 0 ? (

@@ -209,13 +209,7 @@ const ProductDetails = () => {
   return (
     <div className="pdp-page">
       <div className="container">
-        {/* Breadcrumbs */}
-        <div className="pdp-breadcrumbs">
-          <Breadcrumbs 
-            paths={[{ name: 'Home', link: '/' }, { name: 'Shop', link: '/shop' }, { name: product.category, link: '/shop' }]} 
-            current={product.name} 
-          />
-        </div>
+
 
         {/* Main Product Section */}
         <div className="pdp-main">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import { Filter, ChevronDown } from 'lucide-react';
 import Breadcrumbs from '../components/shop/Breadcrumbs';
@@ -11,8 +12,11 @@ import './Shop.css';
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
+  const [portalTarget, setPortalTarget] = useState(null);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortOption, setSortOption] = useState('Newest');
+  const sortOptionsList = ["Newest", "Best Selling", "Price Low to High", "Price High to Low", "Most Popular"];
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilterCount, setActiveFilterCount] = useState(0);
@@ -51,6 +55,17 @@ const Shop = () => {
   };
 
   const toggleMobileFilters = () => setIsMobileFiltersOpen(!isMobileFiltersOpen);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const target = document.getElementById('navbar-shop-controls');
+      if (target) {
+        setPortalTarget(target);
+        clearInterval(interval);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   // Reset page to 1 when search query changes
   useEffect(() => {
@@ -123,58 +138,19 @@ const Shop = () => {
     <div className="shop-page container">
       {/* Top Bar: Breadcrumbs & Header */}
       <div className="shop-header">
-        <Breadcrumbs paths={[{ name: 'Home', link: '/' }, { name: 'Shop', link: '/shop' }]} current={searchQuery ? `Search: "${searchQuery}"` : 'All Products'} />
         <h1 className="shop-title">{searchQuery ? `Results for "${searchQuery}"` : 'All Products'}</h1>
       </div>
 
-
-
-      {/* Toolbar: Mobile Filters Toggle & Sort Dropdown */}
-      <div className="shop-toolbar">
-        <button className="mobile-filters-btn" onClick={toggleMobileFilters}>
-          <Filter size={18} /> Filters
+      {/* Advanced Filters Button Portal */}
+      {portalTarget && createPortal(
+        <button className="advance-filters-btn" onClick={toggleMobileFilters}>
+          Advanced Filters
           {activeFilterCount > 0 && (
             <span className="filter-badge">{activeFilterCount}</span>
           )}
-        </button>
-        
-        <div className="shop-results-count">
-          {!loading && <span>Showing {products.length} of {totalProducts} product{totalProducts !== 1 ? 's' : ''}</span>}
-        </div>
-
-        <div className="shop-sort">
-          <span className="sort-label">Show:</span>
-          <select 
-            className="sort-select limit-select" 
-            value={limit} 
-            onChange={(e) => {
-              setLimit(Number(e.target.value));
-              setPage(1);
-            }}
-            style={{ marginRight: '16px' }}
-          >
-            <option value="20">20</option>
-            <option value="40">40</option>
-            <option value="60">60</option>
-          </select>
-
-          <span className="sort-label">Sort by:</span>
-          <select 
-            className="sort-select" 
-            value={sortOption} 
-            onChange={(e) => {
-              setSortOption(e.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="Newest">Newest</option>
-            <option value="Best Selling">Best Selling</option>
-            <option value="Price Low to High">Price: Low to High</option>
-            <option value="Price High to Low">Price: High to Low</option>
-            <option value="Most Popular">Most Popular</option>
-          </select>
-        </div>
-      </div>
+        </button>,
+        portalTarget
+      )}
 
       {/* Category Selector */}
       <div className="category-bar">
@@ -230,26 +206,34 @@ const Shop = () => {
 
       {/* Main Layout: Sidebar & Grid */}
       <div className="shop-layout">
-        {/* Desktop Sidebar */}
-        <aside className="shop-sidebar desktop-only">
-          <ShopFilters 
-            filters={filters} 
-            onFilterChange={handleFilterChange} 
-            onClearAll={handleClearAll}
-          />
-        </aside>
-
-        {/* Mobile Filter Drawer Overlay */}
+        {/* Filter Drawer Overlay (Used for both Desktop & Mobile) */}
         <div className={`mobile-filter-overlay ${isMobileFiltersOpen ? 'open' : ''}`} onClick={toggleMobileFilters}>
           <div className="mobile-filter-drawer" onClick={e => e.stopPropagation()}>
             <div className="drawer-header">
-              <h3>Filters</h3>
+              <h3>Filters & Sort</h3>
               <button className="close-drawer-btn" onClick={toggleMobileFilters}>&times;</button>
             </div>
             <div className="drawer-content">
-              <ShopFilters 
-                filters={filters} 
-                onFilterChange={handleFilterChange} 
+              <div className="filter-section">
+                <span className="filter-title" style={{ display: 'block', marginBottom: '12px', fontWeight: '500' }}>Sort By</span>
+                <select
+                  className="drawer-sort-select"
+                  value={sortOption}
+                  onChange={(e) => {
+                    setSortOption(e.target.value);
+                    setPage(1);
+                  }}
+                >
+                  <option value="Newest">Newest</option>
+                  <option value="Best Selling">Best Selling</option>
+                  <option value="Price Low to High">Price: Low to High</option>
+                  <option value="Price High to Low">Price: High to Low</option>
+                  <option value="Most Popular">Most Popular</option>
+                </select>
+              </div>
+              <ShopFilters
+                filters={filters}
+                onFilterChange={handleFilterChange}
                 onClearAll={handleClearAll}
               />
             </div>
@@ -264,9 +248,9 @@ const Shop = () => {
         {/* Product Grid */}
         <main className="shop-main-content">
           <ShopGrid products={products} loading={loading} />
-          
+
           {!loading && totalProducts > limit && (
-            <Pagination 
+            <Pagination
               currentPage={page}
               totalPages={Math.ceil(totalProducts / limit)}
               onPageChange={setPage}

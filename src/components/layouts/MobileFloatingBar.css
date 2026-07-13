@@ -1,0 +1,108 @@
+.mobile-floating-bar-wrapper {
+  display: none;
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1rem;
+  right: 1rem;
+  height: 64px;
+  z-index: 1000;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.mobile-floating-bar-wrapper.hidden {
+  transform: translateY(150%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-floating-bar-wrapper {
+    display: flex;
+  }
+  .mobile-floating-bar-wrapper.hidden {
+    display: flex; /* keep it flex so transition works before hiding completely */
+  }
+}
+
+.mfb-glass-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  background: rgba(240, 240, 240, 0.5);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 40px;
+  padding: 0 8px;
+  margin-right: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.mfb-item {
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  height: 48px;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.mfb-item:hover, .mfb-item.active {
+  color: #000;
+}
+
+.mfb-item svg {
+  transition: transform 0.3s ease;
+}
+
+.mfb-item:hover svg, .mfb-item.active svg {
+  transform: translateY(-2px);
+}
+
+.mfb-icon-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 56px;
+  height: 48px;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+}
+
+.mfb-item.active .mfb-icon-bg {
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.mfb-logo-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mfb-logo-circle:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.mfb-logo-circle img {
+  width: 32px;
+  height: auto;
+  object-fit: contain;
+}
