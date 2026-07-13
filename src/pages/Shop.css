@@ -578,3 +578,20 @@
     gap: var(--spacing-xs);
   }
 }
+
+/* Responsive adjustments for Advanced Filters button */
+.mobile-filter-icon {
+  display: none;
+}
+.desktop-filter-text {
+  display: inline;
+}
+
+@media (max-width: 768px) {
+  .mobile-filter-icon {
+    display: inline-block;
+  }
+  .desktop-filter-text {
+    display: none;
+  }
+}

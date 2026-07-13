@@ -226,6 +226,16 @@
     flex-direction: column;
   }
 
+  .hero-img {
+    object-position: center 30%;
+    transform-origin: center 30%;
+  }
+
+  .hero-right .hero-img {
+    object-position: center 20%;
+    transform-origin: center 20%;
+  }
+
   .hero-logo-text {
     font-size: clamp(5rem, 25vw, 10rem);
   }

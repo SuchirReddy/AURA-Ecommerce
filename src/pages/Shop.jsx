@@ -144,7 +144,8 @@ const Shop = () => {
       {/* Advanced Filters Button Portal */}
       {portalTarget && createPortal(
         <button className="advance-filters-btn" onClick={toggleMobileFilters}>
-          Advanced Filters
+          <Filter size={16} className="mobile-filter-icon" />
+          <span className="desktop-filter-text">Advanced Filters</span>
           {activeFilterCount > 0 && (
             <span className="filter-badge">{activeFilterCount}</span>
           )}

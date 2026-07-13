@@ -409,23 +409,21 @@
 
   /* Force button styling for Advance Filters inside the navbar portal */
   #navbar-shop-controls .advance-filters-btn {
-    background: #ffffff !important;
+    background: transparent !important;
     border: none !important;
-    border-radius: 24px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
-    padding: 6px 14px !important;
-    font-size: 0.85rem !important;
-    font-weight: 500 !important;
-    color: #000000 !important;
-    height: 32px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    color: var(--text-primary) !important;
+    height: auto !important;
     display: flex !important;
     align-items: center !important;
   }
 
   [data-theme="dark"] #navbar-shop-controls .advance-filters-btn {
-    background: #111111 !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    border: none !important;
   }
 
   .navbar-links {
