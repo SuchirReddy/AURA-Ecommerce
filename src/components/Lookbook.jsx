@@ -49,13 +49,16 @@ const Lookbook = () => {
         </div>
         
         <div className="lookbook-image-wrapper">
-          <img src="/assets/premium_lookbook.png" alt="Editorial Fashion Lookbook" />
+          <div className="lookbook-image-inner">
+            <img src="/assets/premium_lookbook.png" alt="Editorial Fashion Lookbook" />
+          </div>
           
           {hotspots.map((spot) => (
             <div 
               key={spot.id} 
               className="hotspot" 
               style={{ top: spot.top, left: spot.left }}
+              tabIndex="0"
             >
               <div className="hotspot-inner"></div>
               

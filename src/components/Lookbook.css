@@ -39,18 +39,25 @@
   width: 100%;
   max-width: 900px;
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  /* Remove overflow: hidden to prevent clipping tooltips */
   box-shadow: var(--shadow-lg);
 }
 
-.lookbook-image-wrapper img {
+.lookbook-image-inner {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.lookbook-image-inner img {
   width: 100%;
   height: auto;
   display: block;
   transition: transform var(--transition-slow);
 }
 
-.lookbook-image-wrapper:hover img {
+.lookbook-image-wrapper:hover .lookbook-image-inner img {
   transform: scale(1.02);
 }
 
@@ -89,12 +96,16 @@
   border-radius: 50%;
 }
 
-.hotspot:hover {
+.hotspot:hover,
+.hotspot:focus,
+.hotspot:focus-within {
   transform: translate(-50%, -50%) scale(1.2);
   background-color: var(--accent);
 }
 
-.hotspot:hover .hotspot-inner {
+.hotspot:hover .hotspot-inner,
+.hotspot:focus .hotspot-inner,
+.hotspot:focus-within .hotspot-inner {
   background-color: #ffffff;
 }
 
@@ -119,7 +130,9 @@
   z-index: 20;
 }
 
-.hotspot:hover .hotspot-tooltip {
+.hotspot:hover .hotspot-tooltip,
+.hotspot:focus .hotspot-tooltip,
+.hotspot:focus-within .hotspot-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(10px);

@@ -29,7 +29,24 @@
 
 /* Category Bar */
 .category-bar {
+  position: sticky;
+  top: 53px;
+  z-index: 49;
+  background: rgba(250, 248, 245, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px 0 12px 0;
   margin-bottom: var(--spacing-xl);
+
+  /* Stretch to full viewport width */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+}
+
+[data-theme="dark"] .category-bar {
+  background: rgba(0, 0, 0, 0.95);
 }
 
 .category-scroll {
@@ -583,6 +600,7 @@
 .mobile-filter-icon {
   display: none;
 }
+
 .desktop-filter-text {
   display: inline;
 }
@@ -591,6 +609,7 @@
   .mobile-filter-icon {
     display: inline-block;
   }
+
   .desktop-filter-text {
     display: none;
   }
