@@ -2,6 +2,8 @@ import { supabase } from '../lib/supabase';
 import { incrementCouponUsage } from './couponService';
 import { notifyNewOrder, notifyLowStock, notifyOrderStatusChange } from './notificationService';
 
+import { getOrCreateGuestProfile } from './userService';
+
 // ==========================================
 // ORDERS
 // ==========================================
@@ -45,11 +47,16 @@ export const getOrderById = async (id) => {
 };
 
 export const createOrder = async (orderData, cartItems) => {
+  let userId = orderData.user_id;
+  if (!userId) {
+    userId = await getOrCreateGuestProfile();
+  }
+
   // Insert order
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert([{
-      user_id: orderData.user_id,
+      user_id: userId,
       order_number: orderData.order_number,
       total_amount: orderData.total_amount,
       status: orderData.status,
@@ -107,7 +114,9 @@ export const createOrder = async (orderData, cartItems) => {
   }
 
   // Clear cart
-  await supabase.from('cart_items').delete().eq('user_id', orderData.user_id);
+  if (orderData.user_id) {
+    await supabase.from('cart_items').delete().eq('user_id', orderData.user_id);
+  }
 
   // Trigger new order notification (async, non-blocking)
   notifyNewOrder(order).catch(() => {});
@@ -198,7 +207,12 @@ export const trackOrder = async (orderNumber, email) => {
   }
 
   const profileEmail = data.profiles?.email;
-  if (!profileEmail || profileEmail.toLowerCase() !== email.toLowerCase()) {
+  const guestEmail = data.shipping_address?.email;
+
+  if (
+    (!profileEmail || profileEmail.toLowerCase() !== email.toLowerCase()) &&
+    (!guestEmail || guestEmail.toLowerCase() !== email.toLowerCase())
+  ) {
     throw new Error('Email address does not match our records for this order.');
   }
 

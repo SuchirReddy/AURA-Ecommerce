@@ -85,8 +85,8 @@ function App() {
           </Route>
 
           {/* Standalone Storefront Routes */}
-          <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-          <Route path="/confirmation" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/confirmation" element={<OrderConfirmation />} />
 
           {/* Admin Routes (Standalone Layout) */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>

@@ -78,6 +78,36 @@ export const syncUserProfile = async (clerkUser) => {
   return newProfile;
 };
 
+export const getOrCreateGuestProfile = async () => {
+  const guestClerkId = 'guest_checkout_user';
+  
+  const { data: existing } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('clerk_user_id', guestClerkId)
+    .single();
+    
+  if (existing) return existing.id;
+  
+  const { data: newGuest, error } = await supabase
+    .from('profiles')
+    .insert([{
+      clerk_user_id: guestClerkId,
+      full_name: 'Guest User',
+      email: 'guest@aura.com',
+      role: 'user'
+    }])
+    .select('id')
+    .single();
+    
+  if (error) {
+    console.error('Failed to create guest profile', error);
+    throw new Error('Failed to setup guest checkout database record.');
+  }
+  
+  return newGuest.id;
+};
+
 export const getCustomers = async () => {
   const { data, error } = await supabase
     .from('profiles')

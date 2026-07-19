@@ -60,7 +60,7 @@ const OrderConfirmation = () => {
         {/* Status Card */}
         <div className="status-card fade-in-up delay-2">
           <h2>Your order is confirmed</h2>
-          <p>We've accepted your order, and we're getting it ready. A confirmation email has been sent to <strong>{order.profiles?.email || 'your email'}</strong>.</p>
+          <p>We've accepted your order, and we're getting it ready. A confirmation email has been sent to <strong>{order.shipping_address?.email || order.profiles?.email || 'your email'}</strong>.</p>
           <div className="status-timeline">
             <div className="timeline-step active">
               <div className="step-icon"><Check size={16} /></div>

@@ -31,6 +31,10 @@ const Checkout = () => {
 
   const handleCardInputChange = (e) => {
     let { name, value } = e.target;
+    if (name === 'c_num') name = 'number';
+    if (name === 'c_exp') name = 'expiry';
+    if (name === 'c_cvc') name = 'cvc';
+    if (name === 'c_name') name = 'name';
     // Basic formatting
     if (name === 'number') {
       value = value.replace(/\D/g, '').substring(0, 16);
@@ -47,7 +51,9 @@ const Checkout = () => {
   };
 
   const handleCardInputFocus = (e) => {
-    setCardDetails(prev => ({ ...prev, focused: e.target.name }));
+    let name = e.target.name;
+    if (name === 'c_cvc') name = 'cvc';
+    setCardDetails(prev => ({ ...prev, focused: name }));
   };
 
   const handleCardInputBlur = () => {
@@ -60,6 +66,7 @@ const Checkout = () => {
 
   const [addressData, setAddressData] = useState({
     country: 'India',
+    email: '',
     firstName: '',
     lastName: '',
     address: '',
@@ -88,6 +95,7 @@ const Checkout = () => {
       if (user) {
         setAddressData(prev => ({
           ...prev,
+          email: user.primaryEmailAddress?.emailAddress || '',
           firstName: user.firstName || '',
           lastName: user.lastName || ''
         }));
@@ -107,7 +115,8 @@ const Checkout = () => {
           setCartItems(items);
         }
       } else {
-        setCartItems([]);
+        const items = await getCartItems(null);
+        setCartItems(items);
       }
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -178,6 +187,7 @@ const Checkout = () => {
 
     if (step === 1) {
       if (
+        !addressData.email.trim() ||
         !addressData.firstName.trim() ||
         !addressData.lastName.trim() ||
         !addressData.address.trim() ||
@@ -186,7 +196,7 @@ const Checkout = () => {
         !addressData.pinCode.trim() ||
         !addressData.phone.trim()
       ) {
-        setCheckoutError('Please fill in all mandatory fields (Name, Address, City, State, PIN code, Phone number).');
+        setCheckoutError('Please fill in all mandatory fields (Email, Name, Address, City, State, PIN code, Phone number).');
         return;
       }
     }
@@ -194,11 +204,6 @@ const Checkout = () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      if (!userProfile) {
-        navigate('/login');
-        return;
-      }
-
       // Generate logical order number: ORD-YYYYMMDD-XXXX
       const date = new Date();
       const yyyy = date.getFullYear();
@@ -209,7 +214,7 @@ const Checkout = () => {
 
       // Build order payload
       const orderData = {
-        user_id: userProfile.id,
+        user_id: userProfile ? userProfile.id : null,
         order_number: orderNumber,
         total_amount: total,
         status: 'processing',
@@ -225,6 +230,7 @@ const Checkout = () => {
         }
 
         const newOrder = await createOrder(orderData, cartItems);
+        await clearCart(userProfile ? userProfile.id : null);
 
         if (paymentMethod === 'credit_card') {
           setPaymentStatus('success');
@@ -313,6 +319,7 @@ const Checkout = () => {
                     <option value="United States">United States</option>
                     <option value="United Kingdom">United Kingdom</option>
                   </select>
+                  <input type="email" name="email" value={addressData.email} onChange={handleAddressChange} placeholder="Email address" className="checkout-input" required />
                   <div className="input-row">
                     <input type="text" name="firstName" value={addressData.firstName} onChange={handleAddressChange} placeholder="First name" className="checkout-input" required />
                     <input type="text" name="lastName" value={addressData.lastName} onChange={handleAddressChange} placeholder="Last name" className="checkout-input" required />
@@ -475,12 +482,12 @@ const Checkout = () => {
 
                             {/* Inputs */}
                             <div className="card-input-container">
-                              <input type="text" name="number" value={cardDetails.number} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Card number" className="checkout-input" required />
+                              <input type="text" name="c_num" autoComplete="new-password" value={cardDetails.number} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Card number" className="checkout-input" required />
                               <div className="input-row">
-                                <input type="text" name="expiry" value={cardDetails.expiry} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Expiration date (MM / YY)" className="checkout-input" required />
-                                <input type="password" name="cvc" value={cardDetails.cvc} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Security code (CVC)" className="checkout-input" required maxLength="4" />
+                                <input type="text" name="c_exp" autoComplete="new-password" value={cardDetails.expiry} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Expiration date (MM / YY)" className="checkout-input" required />
+                                <input type="password" name="c_cvc" autoComplete="new-password" value={cardDetails.cvc} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Security code (CVC)" className="checkout-input" required maxLength="4" />
                               </div>
-                              <input type="text" name="name" value={cardDetails.name} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Name on card" className="checkout-input" required />
+                              <input type="text" name="c_name" autoComplete="new-password" value={cardDetails.name} onChange={handleCardInputChange} onFocus={handleCardInputFocus} onBlur={handleCardInputBlur} placeholder="Name on card" className="checkout-input" required />
                             </div>
                           </div>
                         </div>
